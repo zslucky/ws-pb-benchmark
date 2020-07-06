@@ -9,7 +9,7 @@
     "dev": "parcel ./web/index.html ./web/json-pages/index.html ./web/pb-pages/index.html",
     "server": "nodemon index",
     "proto": "pbjs -t static-module -w commonjs -o ./protos/IndexQuote.js ./protos/IndexQuote.proto",
-    "build": "yarn proto && parcel build ./web/index.html ./web/json-pages/index.html ./web/pb-pages/index.html"
+    "build": "yarn proto && parcel build --public-url '/ws-pb-benchmark/dist' ./web/index.html ./web/json-pages/index.html ./web/pb-pages/index.html"
   },
   "dependencies": {
     "consola": "^2.14.0",
