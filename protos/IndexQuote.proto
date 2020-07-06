@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+message PBIndexQuote {
+  enum Side {
+    Buy = 0;
+    Sell = 1;
+  }
+  enum Symbol {
+    BTCUSD = 0;
+    ETHUSD = 1;
+  }
+  enum TickDirection {
+    ZeroMinusTick = 0;
+    ZeroPlusTick = 1;
+  }
+  message Orderbook {
+    int32 id = 0;
+    double price = 1;
+    Side side = 2;
+    double size = 3;
+    Symbol symbol = 4;
+  }
+  message RecentTrade {
+    string execID = 0;
+    string execPrice = 1;
+    double qty = 2;
+    string execTime = 3;
+    Side side = 4;
+    Symbol symbol = 5;
+    TickDirection tickDirection = 6;
+    uint32 transactTimeE6 = 7;
+  }
+  message instrument {}
+
+  int32 crossSeq = 0;
+  int64 timestampE6 = 1;
+  string topic = 2;
+  string type = 3;
+  repeated Orderbook orderbook = 4;
+  repeated RecentTrade recentTrade = 5;
+}

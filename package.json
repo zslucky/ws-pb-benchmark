@@ -1,0 +1,24 @@
+{
+  "name": "ws-pb",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "git@github.com:zslucky/ws-pb-benchmark.git",
+  "author": "lucky.zhou <zsney.lzhou@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "parcel ./web/index.html ./web/json-pages/index.html ./web/pb-pages/index.html",
+    "server": "nodemon index",
+    "proto": "pbjs -t static-module -w commonjs -o ./protos/IndexQuote.js ./protos/IndexQuote.proto",
+    "build": "yarn proto && parcel build ./web/index.html ./web/json-pages/index.html ./web/pb-pages/index.html"
+  },
+  "dependencies": {
+    "consola": "^2.14.0",
+    "lodash": "^4.17.15",
+    "protobufjs": "^6.9.0",
+    "ws": "^7.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4",
+    "parcel-bundler": "^1.12.4"
+  }
+}
