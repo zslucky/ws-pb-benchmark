@@ -118,11 +118,15 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"json-pages/index.js":[function(require,module,exports) {
-var ws = new WebSocket('ws://localhost:3000/json');
+var ws = new WebSocket('wss://ws-js-pb-server.herokuapp.com/json');
 
 function ab2str(buf) {
   return String.fromCharCode.apply(null, new Uint16Array(buf));
 }
+
+ws.onopen = function () {
+  document.querySelector('.status-txt').innerHTML = '<span style="color:green">Connected</span>';
+};
 /**
  * Use arrayBuffer
  */
@@ -139,8 +143,13 @@ ws.onmessage = function (message) {
   // console.log('span = ', end - start, 'ms');
 };
 
+var timer = 0;
+
 window.sendMsg = function sendMsg() {
-  ws.send(1);
+  clearInterval(timer);
+  timer = setInterval(function () {
+    ws.send(1);
+  }, 2000);
 };
 },{}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -170,7 +179,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50790" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53566" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

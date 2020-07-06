@@ -6123,10 +6123,15 @@ module.exports = $root;
 
 var _IndexQuote = require("../../protos/IndexQuote");
 
-var ws = new WebSocket('ws://localhost:3000/pb');
+var ws = new WebSocket('wss://ws-js-pb-server.herokuapp.com/pb');
+
+ws.onopen = function () {
+  document.querySelector('.status-txt').innerHTML = '<span style="color:green">Connected</span>';
+};
 /**
  * Use arrayBuffer
  */
+
 
 ws.binaryType = 'arraybuffer';
 
@@ -6142,8 +6147,13 @@ ws.onmessage = function (message) {
   // console.log('span = ', end - start, 'ms');
 };
 
+var timer = 0;
+
 window.sendMsg = function sendMsg() {
-  ws.send(1);
+  clearInterval(timer);
+  timer = setInterval(function () {
+    ws.send(1);
+  }, 2000);
 };
 /**
  * Use FileReader
@@ -6190,7 +6200,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50790" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53566" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

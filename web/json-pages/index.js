@@ -1,8 +1,12 @@
-var ws = new WebSocket('ws://localhost:3000/json');
+var ws = new WebSocket('wss://ws-js-pb-server.herokuapp.com/json');
 
 function ab2str(buf) {
   return String.fromCharCode.apply(null, new Uint16Array(buf));
 }
+
+ws.onopen = () => {
+  document.querySelector('.status-txt').innerHTML = '<span style="color:green">Connected</span>';
+};
 
 /**
  * Use arrayBuffer
@@ -22,6 +26,8 @@ ws.onmessage = function (message) {
   // console.log('span = ', end - start, 'ms');
 };
 
+let timer = 0;
 window.sendMsg = function sendMsg() {
-  ws.send(1);
+  clearInterval(timer);
+  timer = setInterval(() => { ws.send(1); }, 2000);
 }
