@@ -6,10 +6,10 @@
   "author": "lucky.zhou <zsney.lzhou@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "parcel ./web/index.html ./web/json-pages/index.html ./web/pb-pages/index.html",
+    "dev": "parcel ./web/index.html ./web/json-pages/index.html ./web/pb-pages/index.html ./web/json-webworker-pages/index.html ./web/pb-webworker-pages/index.html",
     "server": "nodemon index",
-    "proto": "pbjs -t static-module -w commonjs -o ./protos/IndexQuote.js ./protos/IndexQuote.proto",
-    "build": "yarn proto && parcel build --public-url '/ws-pb-benchmark/dist' ./web/index.html ./web/json-pages/index.html ./web/pb-pages/index.html"
+    "proto": "pbjs --keep-case --no-comments -t static-module -w commonjs -o ./protos/IndexQuote.js ./protos/IndexQuote.proto",
+    "build": "yarn proto && parcel build --public-url '/ws-pb-benchmark/dist' ./web/index.html ./web/json-pages/index.html ./web/pb-pages/index.html ./web/json-webworker-pages/index.html ./web/pb-webworker-pages/index.html"
   },
   "dependencies": {
     "consola": "^2.14.0",

@@ -117,39 +117,40 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"json-pages/index.js":[function(require,module,exports) {
+})({"json-webworker-pages/ws.worker.js":[function(require,module,exports) {
 var ws = new WebSocket('wss://ws-js-pb-server.herokuapp.com/json');
+var waitQueue = [];
+var wsOpened = false;
 
-function ab2str(buf) {
-  return String.fromCharCode.apply(null, new Uint16Array(buf));
-}
+var sendWaitingQueue = function sendWaitingQueue() {
+  do {
+    ws.send(waitQueue.shift());
+  } while (waitQueue.length < 1);
+};
 
 ws.onopen = function () {
-  document.querySelector('.status-txt').innerHTML = '<span style="color:green">Connected</span>';
+  wsOpened = true;
+  postMessage('opened'); // sendWaitingQueue();
 };
 /**
  * Use arrayBuffer
  */
-// ws.binaryType = 'arraybuffer';
 
 
 ws.onmessage = function (message) {
-  // const start = performance.now();
   var data = JSON.parse(message.data);
-  var endTs = new Date().getTime();
-  console.log('full span = ', endTs - data.timestampE6, 'ms'); // const msg = ab2str(message.data);
-  // console.log('msg = ', msg);
-  // const end = performance.now();
-  // console.log('span = ', end - start, 'ms');
+  postMessage(data);
 };
 
-var timer = 0;
+onmessage = function onmessage(_ref) {
+  var data = _ref.data;
 
-window.sendMsg = function sendMsg() {
-  clearInterval(timer);
-  timer = setInterval(function () {
-    ws.send(1);
-  }, 2000);
+  if (!wsOpened) {
+    waitQueue.push(data);
+    return;
+  }
+
+  ws.send(data);
 };
 },{}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -355,5 +356,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","json-pages/index.js"], null)
-//# sourceMappingURL=/json-pages.df7a23ee.js.map
+},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","json-webworker-pages/ws.worker.js"], null)
+//# sourceMappingURL=/ws.worker.39a1f5e9.js.map

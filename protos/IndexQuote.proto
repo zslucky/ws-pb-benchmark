@@ -30,12 +30,38 @@ message PBIndexQuote {
     TickDirection tickDirection = 6;
     uint32 transactTimeE6 = 7;
   }
-  message instrument {}
+  message Instrument {
+    int32 id = 0;
+    int64 crossSeq = 1;
+    int32 countdownHour = 2;
+    string createdAt = 3;
+    int32 fundingRateE6 = 4;
+    double highPrice24hE4 = 5;
+    double indexPriceE4=6;
+    TickDirection lastTickDirection = 7;
+    double lowPrice24hE4 = 8;
+    double markPriceE4 = 9;
+    string nextFundingTime = 10;
+    double openInterest = 11;
+    double openValueE8 = 12;
+    int32 predictedFundingRateE6 = 13;
+    double prevPrice1hE4 = 14;
+    double prevPrice24hE4 = 15;
+    int32 price1hPcntE6 = 16;
+    int32 price24hPcntE6 = 17;
+    Symbol symbol = 18;
+    double totalTurnoverE8 = 19;
+    double totalVolume = 20;
+    double turnover24hE8 = 21;
+    string updatedAt = 22;
+    double volume24h = 23;
+  }
 
-  int32 crossSeq = 0;
+  int64 crossSeq = 0;
   int64 timestampE6 = 1;
   string topic = 2;
   string type = 3;
   repeated Orderbook orderbook = 4;
   repeated RecentTrade recentTrade = 5;
+  Instrument instrument = 6;
 }

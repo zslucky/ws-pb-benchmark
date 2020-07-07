@@ -5809,60 +5809,49 @@ $root.PBIndexQuote = function () {
 }();
 
 module.exports = $root;
-},{"protobufjs/minimal":"../node_modules/protobufjs/minimal.js"}],"pb-pages/index.js":[function(require,module,exports) {
+},{"protobufjs/minimal":"../node_modules/protobufjs/minimal.js"}],"pb-webworker-pages/ws.worker.js":[function(require,module,exports) {
 "use strict";
 
 var _IndexQuote = require("../../protos/IndexQuote");
 
 var ws = new WebSocket('wss://ws-js-pb-server.herokuapp.com/pb');
+ws.binaryType = 'arraybuffer';
+var waitQueue = [];
+var wsOpened = false;
+
+var sendWaitingQueue = function sendWaitingQueue() {
+  do {
+    ws.send(waitQueue.shift());
+  } while (waitQueue.length < 1);
+};
 
 ws.onopen = function () {
-  document.querySelector('.status-txt').innerHTML = '<span style="color:green">Connected</span>';
+  wsOpened = true;
+  postMessage('opened'); // sendWaitingQueue();
 };
 /**
  * Use arrayBuffer
  */
 
 
-ws.binaryType = 'arraybuffer';
-
 ws.onmessage = function (message) {
-  // const start = performance.now();
   var data = new Uint8Array(message.data);
 
   var decodeMsg = _IndexQuote.PBIndexQuote.decode(data);
 
-  var endTs = new Date().getTime();
-  console.log('full span = ', endTs - decodeMsg.timestampE6, 'ms'); // console.log('decodeMsg = ', decodeMsg);
-  // const end = performance.now();
-  // console.log('span = ', end - start, 'ms');
+  postMessage(decodeMsg);
 };
 
-var timer = 0;
+onmessage = function onmessage(_ref) {
+  var data = _ref.data;
 
-window.sendMsg = function sendMsg() {
-  clearInterval(timer);
-  timer = setInterval(function () {
-    ws.send(1);
-  }, 2000);
+  if (!wsOpened) {
+    waitQueue.push(data);
+    return;
+  }
+
+  ws.send(data);
 };
-/**
- * Use FileReader
- */
-// ws.onmessage = function (message) {
-//   const start = performance.now();
-//   console.log('message = ', message);
-//   var reader = new FileReader();
-//   reader.readAsArrayBuffer(message.data);
-//   reader.onload = () => {
-//     var buf = new Uint8Array(reader.result);
-//     console.log('buf = ', buf);
-//     var content = response.decode(buf);
-//     console.log('content = ', content);
-//     const end = performance.now();
-//     console.log('span = ', end - start, 'ms');
-//   };
-// };
 },{"../../protos/IndexQuote":"../protos/IndexQuote.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -6067,5 +6056,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","pb-pages/index.js"], null)
-//# sourceMappingURL=/pb-pages.9928177a.js.map
+},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","pb-webworker-pages/ws.worker.js"], null)
+//# sourceMappingURL=/ws.worker.ffaeda34.js.map

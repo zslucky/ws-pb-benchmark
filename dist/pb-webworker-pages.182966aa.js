@@ -117,30 +117,20 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"json-pages/index.js":[function(require,module,exports) {
-var ws = new WebSocket('wss://ws-js-pb-server.herokuapp.com/json');
+})({"pb-webworker-pages/index.js":[function(require,module,exports) {
+var myWorker = new Worker("/ws.worker.ffaeda34.js");
+myWorker.postMessage('312');
 
-function ab2str(buf) {
-  return String.fromCharCode.apply(null, new Uint16Array(buf));
-}
+myWorker.onmessage = function (_ref) {
+  var data = _ref.data;
 
-ws.onopen = function () {
-  document.querySelector('.status-txt').innerHTML = '<span style="color:green">Connected</span>';
-};
-/**
- * Use arrayBuffer
- */
-// ws.binaryType = 'arraybuffer';
+  if (data === 'opened') {
+    document.querySelector('.status-txt').innerHTML = '<span style="color:green">Connected</span>';
+    return;
+  }
 
-
-ws.onmessage = function (message) {
-  // const start = performance.now();
-  var data = JSON.parse(message.data);
   var endTs = new Date().getTime();
-  console.log('full span = ', endTs - data.timestampE6, 'ms'); // const msg = ab2str(message.data);
-  // console.log('msg = ', msg);
-  // const end = performance.now();
-  // console.log('span = ', end - start, 'ms');
+  console.log('full span = ', endTs - data.timestampE6, 'ms');
 };
 
 var timer = 0;
@@ -148,10 +138,10 @@ var timer = 0;
 window.sendMsg = function sendMsg() {
   clearInterval(timer);
   timer = setInterval(function () {
-    ws.send(1);
+    myWorker.postMessage(1);
   }, 2000);
 };
-},{}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./ws.worker.js":[["ws.worker.ffaeda34.js","pb-webworker-pages/ws.worker.js"],"ws.worker.ffaeda34.js.map","pb-webworker-pages/ws.worker.js"]}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -355,5 +345,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","json-pages/index.js"], null)
-//# sourceMappingURL=/json-pages.df7a23ee.js.map
+},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","pb-webworker-pages/index.js"], null)
+//# sourceMappingURL=/pb-webworker-pages.182966aa.js.map

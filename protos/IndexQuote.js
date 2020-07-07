@@ -3,34 +3,12 @@
 
 var $protobuf = require("protobufjs/minimal");
 
-// Common aliases
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
-// Exported root namespace
 var $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
 
 $root.PBIndexQuote = (function() {
 
-    /**
-     * Properties of a PBIndexQuote.
-     * @exports IPBIndexQuote
-     * @interface IPBIndexQuote
-     * @property {number|null} [crossSeq] PBIndexQuote crossSeq
-     * @property {number|Long|null} [timestampE6] PBIndexQuote timestampE6
-     * @property {string|null} [topic] PBIndexQuote topic
-     * @property {string|null} [type] PBIndexQuote type
-     * @property {Array.<PBIndexQuote.IOrderbook>|null} [orderbook] PBIndexQuote orderbook
-     * @property {Array.<PBIndexQuote.IRecentTrade>|null} [recentTrade] PBIndexQuote recentTrade
-     */
-
-    /**
-     * Constructs a new PBIndexQuote.
-     * @exports PBIndexQuote
-     * @classdesc Represents a PBIndexQuote.
-     * @implements IPBIndexQuote
-     * @constructor
-     * @param {IPBIndexQuote=} [properties] Properties to set
-     */
     function PBIndexQuote(properties) {
         this.orderbook = [];
         this.recentTrade = [];
@@ -40,119 +18,44 @@ $root.PBIndexQuote = (function() {
                     this[keys[i]] = properties[keys[i]];
     }
 
-    /**
-     * PBIndexQuote crossSeq.
-     * @member {number} crossSeq
-     * @memberof PBIndexQuote
-     * @instance
-     */
-    PBIndexQuote.prototype.crossSeq = 0;
-
-    /**
-     * PBIndexQuote timestampE6.
-     * @member {number|Long} timestampE6
-     * @memberof PBIndexQuote
-     * @instance
-     */
+    PBIndexQuote.prototype.crossSeq = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
     PBIndexQuote.prototype.timestampE6 = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-    /**
-     * PBIndexQuote topic.
-     * @member {string} topic
-     * @memberof PBIndexQuote
-     * @instance
-     */
     PBIndexQuote.prototype.topic = "";
-
-    /**
-     * PBIndexQuote type.
-     * @member {string} type
-     * @memberof PBIndexQuote
-     * @instance
-     */
     PBIndexQuote.prototype.type = "";
-
-    /**
-     * PBIndexQuote orderbook.
-     * @member {Array.<PBIndexQuote.IOrderbook>} orderbook
-     * @memberof PBIndexQuote
-     * @instance
-     */
     PBIndexQuote.prototype.orderbook = $util.emptyArray;
-
-    /**
-     * PBIndexQuote recentTrade.
-     * @member {Array.<PBIndexQuote.IRecentTrade>} recentTrade
-     * @memberof PBIndexQuote
-     * @instance
-     */
     PBIndexQuote.prototype.recentTrade = $util.emptyArray;
+    PBIndexQuote.prototype.instrument = null;
 
-    /**
-     * Creates a new PBIndexQuote instance using the specified properties.
-     * @function create
-     * @memberof PBIndexQuote
-     * @static
-     * @param {IPBIndexQuote=} [properties] Properties to set
-     * @returns {PBIndexQuote} PBIndexQuote instance
-     */
     PBIndexQuote.create = function create(properties) {
         return new PBIndexQuote(properties);
     };
 
-    /**
-     * Encodes the specified PBIndexQuote message. Does not implicitly {@link PBIndexQuote.verify|verify} messages.
-     * @function encode
-     * @memberof PBIndexQuote
-     * @static
-     * @param {IPBIndexQuote} message PBIndexQuote message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
     PBIndexQuote.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
         if (message.crossSeq != null && Object.hasOwnProperty.call(message, "crossSeq"))
-            writer.uint32(/* id 0, wireType 0 =*/0).int32(message.crossSeq);
+            writer.uint32(0).int64(message.crossSeq);
         if (message.timestampE6 != null && Object.hasOwnProperty.call(message, "timestampE6"))
-            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.timestampE6);
+            writer.uint32(8).int64(message.timestampE6);
         if (message.topic != null && Object.hasOwnProperty.call(message, "topic"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.topic);
+            writer.uint32(18).string(message.topic);
         if (message.type != null && Object.hasOwnProperty.call(message, "type"))
-            writer.uint32(/* id 3, wireType 2 =*/26).string(message.type);
+            writer.uint32(26).string(message.type);
         if (message.orderbook != null && message.orderbook.length)
             for (var i = 0; i < message.orderbook.length; ++i)
-                $root.PBIndexQuote.Orderbook.encode(message.orderbook[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+                $root.PBIndexQuote.Orderbook.encode(message.orderbook[i], writer.uint32(34).fork()).ldelim();
         if (message.recentTrade != null && message.recentTrade.length)
             for (var i = 0; i < message.recentTrade.length; ++i)
-                $root.PBIndexQuote.RecentTrade.encode(message.recentTrade[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+                $root.PBIndexQuote.RecentTrade.encode(message.recentTrade[i], writer.uint32(42).fork()).ldelim();
+        if (message.instrument != null && Object.hasOwnProperty.call(message, "instrument"))
+            $root.PBIndexQuote.Instrument.encode(message.instrument, writer.uint32(50).fork()).ldelim();
         return writer;
     };
 
-    /**
-     * Encodes the specified PBIndexQuote message, length delimited. Does not implicitly {@link PBIndexQuote.verify|verify} messages.
-     * @function encodeDelimited
-     * @memberof PBIndexQuote
-     * @static
-     * @param {IPBIndexQuote} message PBIndexQuote message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
     PBIndexQuote.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
-    /**
-     * Decodes a PBIndexQuote message from the specified reader or buffer.
-     * @function decode
-     * @memberof PBIndexQuote
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Message length if known beforehand
-     * @returns {PBIndexQuote} PBIndexQuote
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
     PBIndexQuote.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
@@ -161,7 +64,7 @@ $root.PBIndexQuote = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 0:
-                message.crossSeq = reader.int32();
+                message.crossSeq = reader.int64();
                 break;
             case 1:
                 message.timestampE6 = reader.int64();
@@ -182,6 +85,9 @@ $root.PBIndexQuote = (function() {
                     message.recentTrade = [];
                 message.recentTrade.push($root.PBIndexQuote.RecentTrade.decode(reader, reader.uint32()));
                 break;
+            case 6:
+                message.instrument = $root.PBIndexQuote.Instrument.decode(reader, reader.uint32());
+                break;
             default:
                 reader.skipType(tag & 7);
                 break;
@@ -190,36 +96,18 @@ $root.PBIndexQuote = (function() {
         return message;
     };
 
-    /**
-     * Decodes a PBIndexQuote message from the specified reader or buffer, length delimited.
-     * @function decodeDelimited
-     * @memberof PBIndexQuote
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {PBIndexQuote} PBIndexQuote
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
     PBIndexQuote.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
-    /**
-     * Verifies a PBIndexQuote message.
-     * @function verify
-     * @memberof PBIndexQuote
-     * @static
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {string|null} `null` if valid, otherwise the reason why it is not
-     */
     PBIndexQuote.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.crossSeq != null && message.hasOwnProperty("crossSeq"))
-            if (!$util.isInteger(message.crossSeq))
-                return "crossSeq: integer expected";
+            if (!$util.isInteger(message.crossSeq) && !(message.crossSeq && $util.isInteger(message.crossSeq.low) && $util.isInteger(message.crossSeq.high)))
+                return "crossSeq: integer|Long expected";
         if (message.timestampE6 != null && message.hasOwnProperty("timestampE6"))
             if (!$util.isInteger(message.timestampE6) && !(message.timestampE6 && $util.isInteger(message.timestampE6.low) && $util.isInteger(message.timestampE6.high)))
                 return "timestampE6: integer|Long expected";
@@ -247,23 +135,27 @@ $root.PBIndexQuote = (function() {
                     return "recentTrade." + error;
             }
         }
+        if (message.instrument != null && message.hasOwnProperty("instrument")) {
+            var error = $root.PBIndexQuote.Instrument.verify(message.instrument);
+            if (error)
+                return "instrument." + error;
+        }
         return null;
     };
 
-    /**
-     * Creates a PBIndexQuote message from a plain object. Also converts values to their respective internal types.
-     * @function fromObject
-     * @memberof PBIndexQuote
-     * @static
-     * @param {Object.<string,*>} object Plain object
-     * @returns {PBIndexQuote} PBIndexQuote
-     */
     PBIndexQuote.fromObject = function fromObject(object) {
         if (object instanceof $root.PBIndexQuote)
             return object;
         var message = new $root.PBIndexQuote();
         if (object.crossSeq != null)
-            message.crossSeq = object.crossSeq | 0;
+            if ($util.Long)
+                (message.crossSeq = $util.Long.fromValue(object.crossSeq)).unsigned = false;
+            else if (typeof object.crossSeq === "string")
+                message.crossSeq = parseInt(object.crossSeq, 10);
+            else if (typeof object.crossSeq === "number")
+                message.crossSeq = object.crossSeq;
+            else if (typeof object.crossSeq === "object")
+                message.crossSeq = new $util.LongBits(object.crossSeq.low >>> 0, object.crossSeq.high >>> 0).toNumber();
         if (object.timestampE6 != null)
             if ($util.Long)
                 (message.timestampE6 = $util.Long.fromValue(object.timestampE6)).unsigned = false;
@@ -297,18 +189,14 @@ $root.PBIndexQuote = (function() {
                 message.recentTrade[i] = $root.PBIndexQuote.RecentTrade.fromObject(object.recentTrade[i]);
             }
         }
+        if (object.instrument != null) {
+            if (typeof object.instrument !== "object")
+                throw TypeError(".PBIndexQuote.instrument: object expected");
+            message.instrument = $root.PBIndexQuote.Instrument.fromObject(object.instrument);
+        }
         return message;
     };
 
-    /**
-     * Creates a plain object from a PBIndexQuote message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof PBIndexQuote
-     * @static
-     * @param {PBIndexQuote} message PBIndexQuote
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
     PBIndexQuote.toObject = function toObject(message, options) {
         if (!options)
             options = {};
@@ -318,7 +206,11 @@ $root.PBIndexQuote = (function() {
             object.recentTrade = [];
         }
         if (options.defaults) {
-            object.crossSeq = 0;
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.crossSeq = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.crossSeq = options.longs === String ? "0" : 0;
             if ($util.Long) {
                 var long = new $util.Long(0, 0, false);
                 object.timestampE6 = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
@@ -326,9 +218,13 @@ $root.PBIndexQuote = (function() {
                 object.timestampE6 = options.longs === String ? "0" : 0;
             object.topic = "";
             object.type = "";
+            object.instrument = null;
         }
         if (message.crossSeq != null && message.hasOwnProperty("crossSeq"))
-            object.crossSeq = message.crossSeq;
+            if (typeof message.crossSeq === "number")
+                object.crossSeq = options.longs === String ? String(message.crossSeq) : message.crossSeq;
+            else
+                object.crossSeq = options.longs === String ? $util.Long.prototype.toString.call(message.crossSeq) : options.longs === Number ? new $util.LongBits(message.crossSeq.low >>> 0, message.crossSeq.high >>> 0).toNumber() : message.crossSeq;
         if (message.timestampE6 != null && message.hasOwnProperty("timestampE6"))
             if (typeof message.timestampE6 === "number")
                 object.timestampE6 = options.longs === String ? String(message.timestampE6) : message.timestampE6;
@@ -348,27 +244,15 @@ $root.PBIndexQuote = (function() {
             for (var j = 0; j < message.recentTrade.length; ++j)
                 object.recentTrade[j] = $root.PBIndexQuote.RecentTrade.toObject(message.recentTrade[j], options);
         }
+        if (message.instrument != null && message.hasOwnProperty("instrument"))
+            object.instrument = $root.PBIndexQuote.Instrument.toObject(message.instrument, options);
         return object;
     };
 
-    /**
-     * Converts this PBIndexQuote to JSON.
-     * @function toJSON
-     * @memberof PBIndexQuote
-     * @instance
-     * @returns {Object.<string,*>} JSON object
-     */
     PBIndexQuote.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    /**
-     * Side enum.
-     * @name PBIndexQuote.Side
-     * @enum {number}
-     * @property {number} Buy=0 Buy value
-     * @property {number} Sell=1 Sell value
-     */
     PBIndexQuote.Side = (function() {
         var valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "Buy"] = 0;
@@ -376,13 +260,6 @@ $root.PBIndexQuote = (function() {
         return values;
     })();
 
-    /**
-     * Symbol enum.
-     * @name PBIndexQuote.Symbol
-     * @enum {number}
-     * @property {number} BTCUSD=0 BTCUSD value
-     * @property {number} ETHUSD=1 ETHUSD value
-     */
     PBIndexQuote.Symbol = (function() {
         var valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "BTCUSD"] = 0;
@@ -390,13 +267,6 @@ $root.PBIndexQuote = (function() {
         return values;
     })();
 
-    /**
-     * TickDirection enum.
-     * @name PBIndexQuote.TickDirection
-     * @enum {number}
-     * @property {number} ZeroMinusTick=0 ZeroMinusTick value
-     * @property {number} ZeroPlusTick=1 ZeroPlusTick value
-     */
     PBIndexQuote.TickDirection = (function() {
         var valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "ZeroMinusTick"] = 0;
@@ -406,25 +276,6 @@ $root.PBIndexQuote = (function() {
 
     PBIndexQuote.Orderbook = (function() {
 
-        /**
-         * Properties of an Orderbook.
-         * @memberof PBIndexQuote
-         * @interface IOrderbook
-         * @property {number|null} [id] Orderbook id
-         * @property {number|null} [price] Orderbook price
-         * @property {PBIndexQuote.Side|null} [side] Orderbook side
-         * @property {number|null} [size] Orderbook size
-         * @property {PBIndexQuote.Symbol|null} [symbol] Orderbook symbol
-         */
-
-        /**
-         * Constructs a new Orderbook.
-         * @memberof PBIndexQuote
-         * @classdesc Represents an Orderbook.
-         * @implements IOrderbook
-         * @constructor
-         * @param {PBIndexQuote.IOrderbook=} [properties] Properties to set
-         */
         function Orderbook(properties) {
             if (properties)
                 for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
@@ -432,107 +283,36 @@ $root.PBIndexQuote = (function() {
                         this[keys[i]] = properties[keys[i]];
         }
 
-        /**
-         * Orderbook id.
-         * @member {number} id
-         * @memberof PBIndexQuote.Orderbook
-         * @instance
-         */
         Orderbook.prototype.id = 0;
-
-        /**
-         * Orderbook price.
-         * @member {number} price
-         * @memberof PBIndexQuote.Orderbook
-         * @instance
-         */
         Orderbook.prototype.price = 0;
-
-        /**
-         * Orderbook side.
-         * @member {PBIndexQuote.Side} side
-         * @memberof PBIndexQuote.Orderbook
-         * @instance
-         */
         Orderbook.prototype.side = 0;
-
-        /**
-         * Orderbook size.
-         * @member {number} size
-         * @memberof PBIndexQuote.Orderbook
-         * @instance
-         */
         Orderbook.prototype.size = 0;
-
-        /**
-         * Orderbook symbol.
-         * @member {PBIndexQuote.Symbol} symbol
-         * @memberof PBIndexQuote.Orderbook
-         * @instance
-         */
         Orderbook.prototype.symbol = 0;
 
-        /**
-         * Creates a new Orderbook instance using the specified properties.
-         * @function create
-         * @memberof PBIndexQuote.Orderbook
-         * @static
-         * @param {PBIndexQuote.IOrderbook=} [properties] Properties to set
-         * @returns {PBIndexQuote.Orderbook} Orderbook instance
-         */
         Orderbook.create = function create(properties) {
             return new Orderbook(properties);
         };
 
-        /**
-         * Encodes the specified Orderbook message. Does not implicitly {@link PBIndexQuote.Orderbook.verify|verify} messages.
-         * @function encode
-         * @memberof PBIndexQuote.Orderbook
-         * @static
-         * @param {PBIndexQuote.IOrderbook} message Orderbook message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
         Orderbook.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
             if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-                writer.uint32(/* id 0, wireType 0 =*/0).int32(message.id);
+                writer.uint32(0).int32(message.id);
             if (message.price != null && Object.hasOwnProperty.call(message, "price"))
-                writer.uint32(/* id 1, wireType 1 =*/9).double(message.price);
+                writer.uint32(9).double(message.price);
             if (message.side != null && Object.hasOwnProperty.call(message, "side"))
-                writer.uint32(/* id 2, wireType 0 =*/16).int32(message.side);
+                writer.uint32(16).int32(message.side);
             if (message.size != null && Object.hasOwnProperty.call(message, "size"))
-                writer.uint32(/* id 3, wireType 1 =*/25).double(message.size);
+                writer.uint32(25).double(message.size);
             if (message.symbol != null && Object.hasOwnProperty.call(message, "symbol"))
-                writer.uint32(/* id 4, wireType 0 =*/32).int32(message.symbol);
+                writer.uint32(32).int32(message.symbol);
             return writer;
         };
 
-        /**
-         * Encodes the specified Orderbook message, length delimited. Does not implicitly {@link PBIndexQuote.Orderbook.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof PBIndexQuote.Orderbook
-         * @static
-         * @param {PBIndexQuote.IOrderbook} message Orderbook message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
         Orderbook.encodeDelimited = function encodeDelimited(message, writer) {
             return this.encode(message, writer).ldelim();
         };
 
-        /**
-         * Decodes an Orderbook message from the specified reader or buffer.
-         * @function decode
-         * @memberof PBIndexQuote.Orderbook
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {PBIndexQuote.Orderbook} Orderbook
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
         Orderbook.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
@@ -563,30 +343,12 @@ $root.PBIndexQuote = (function() {
             return message;
         };
 
-        /**
-         * Decodes an Orderbook message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof PBIndexQuote.Orderbook
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {PBIndexQuote.Orderbook} Orderbook
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
         Orderbook.decodeDelimited = function decodeDelimited(reader) {
             if (!(reader instanceof $Reader))
                 reader = new $Reader(reader);
             return this.decode(reader, reader.uint32());
         };
 
-        /**
-         * Verifies an Orderbook message.
-         * @function verify
-         * @memberof PBIndexQuote.Orderbook
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
         Orderbook.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
@@ -618,14 +380,6 @@ $root.PBIndexQuote = (function() {
             return null;
         };
 
-        /**
-         * Creates an Orderbook message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof PBIndexQuote.Orderbook
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {PBIndexQuote.Orderbook} Orderbook
-         */
         Orderbook.fromObject = function fromObject(object) {
             if (object instanceof $root.PBIndexQuote.Orderbook)
                 return object;
@@ -659,15 +413,6 @@ $root.PBIndexQuote = (function() {
             return message;
         };
 
-        /**
-         * Creates a plain object from an Orderbook message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof PBIndexQuote.Orderbook
-         * @static
-         * @param {PBIndexQuote.Orderbook} message Orderbook
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
         Orderbook.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
@@ -692,13 +437,6 @@ $root.PBIndexQuote = (function() {
             return object;
         };
 
-        /**
-         * Converts this Orderbook to JSON.
-         * @function toJSON
-         * @memberof PBIndexQuote.Orderbook
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
         Orderbook.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
@@ -708,28 +446,6 @@ $root.PBIndexQuote = (function() {
 
     PBIndexQuote.RecentTrade = (function() {
 
-        /**
-         * Properties of a RecentTrade.
-         * @memberof PBIndexQuote
-         * @interface IRecentTrade
-         * @property {string|null} [execID] RecentTrade execID
-         * @property {string|null} [execPrice] RecentTrade execPrice
-         * @property {number|null} [qty] RecentTrade qty
-         * @property {string|null} [execTime] RecentTrade execTime
-         * @property {PBIndexQuote.Side|null} [side] RecentTrade side
-         * @property {PBIndexQuote.Symbol|null} [symbol] RecentTrade symbol
-         * @property {PBIndexQuote.TickDirection|null} [tickDirection] RecentTrade tickDirection
-         * @property {number|null} [transactTimeE6] RecentTrade transactTimeE6
-         */
-
-        /**
-         * Constructs a new RecentTrade.
-         * @memberof PBIndexQuote
-         * @classdesc Represents a RecentTrade.
-         * @implements IRecentTrade
-         * @constructor
-         * @param {PBIndexQuote.IRecentTrade=} [properties] Properties to set
-         */
         function RecentTrade(properties) {
             if (properties)
                 for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
@@ -737,137 +453,45 @@ $root.PBIndexQuote = (function() {
                         this[keys[i]] = properties[keys[i]];
         }
 
-        /**
-         * RecentTrade execID.
-         * @member {string} execID
-         * @memberof PBIndexQuote.RecentTrade
-         * @instance
-         */
         RecentTrade.prototype.execID = "";
-
-        /**
-         * RecentTrade execPrice.
-         * @member {string} execPrice
-         * @memberof PBIndexQuote.RecentTrade
-         * @instance
-         */
         RecentTrade.prototype.execPrice = "";
-
-        /**
-         * RecentTrade qty.
-         * @member {number} qty
-         * @memberof PBIndexQuote.RecentTrade
-         * @instance
-         */
         RecentTrade.prototype.qty = 0;
-
-        /**
-         * RecentTrade execTime.
-         * @member {string} execTime
-         * @memberof PBIndexQuote.RecentTrade
-         * @instance
-         */
         RecentTrade.prototype.execTime = "";
-
-        /**
-         * RecentTrade side.
-         * @member {PBIndexQuote.Side} side
-         * @memberof PBIndexQuote.RecentTrade
-         * @instance
-         */
         RecentTrade.prototype.side = 0;
-
-        /**
-         * RecentTrade symbol.
-         * @member {PBIndexQuote.Symbol} symbol
-         * @memberof PBIndexQuote.RecentTrade
-         * @instance
-         */
         RecentTrade.prototype.symbol = 0;
-
-        /**
-         * RecentTrade tickDirection.
-         * @member {PBIndexQuote.TickDirection} tickDirection
-         * @memberof PBIndexQuote.RecentTrade
-         * @instance
-         */
         RecentTrade.prototype.tickDirection = 0;
-
-        /**
-         * RecentTrade transactTimeE6.
-         * @member {number} transactTimeE6
-         * @memberof PBIndexQuote.RecentTrade
-         * @instance
-         */
         RecentTrade.prototype.transactTimeE6 = 0;
 
-        /**
-         * Creates a new RecentTrade instance using the specified properties.
-         * @function create
-         * @memberof PBIndexQuote.RecentTrade
-         * @static
-         * @param {PBIndexQuote.IRecentTrade=} [properties] Properties to set
-         * @returns {PBIndexQuote.RecentTrade} RecentTrade instance
-         */
         RecentTrade.create = function create(properties) {
             return new RecentTrade(properties);
         };
 
-        /**
-         * Encodes the specified RecentTrade message. Does not implicitly {@link PBIndexQuote.RecentTrade.verify|verify} messages.
-         * @function encode
-         * @memberof PBIndexQuote.RecentTrade
-         * @static
-         * @param {PBIndexQuote.IRecentTrade} message RecentTrade message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
         RecentTrade.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
             if (message.execID != null && Object.hasOwnProperty.call(message, "execID"))
-                writer.uint32(/* id 0, wireType 2 =*/2).string(message.execID);
+                writer.uint32(2).string(message.execID);
             if (message.execPrice != null && Object.hasOwnProperty.call(message, "execPrice"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.execPrice);
+                writer.uint32(10).string(message.execPrice);
             if (message.qty != null && Object.hasOwnProperty.call(message, "qty"))
-                writer.uint32(/* id 2, wireType 1 =*/17).double(message.qty);
+                writer.uint32(17).double(message.qty);
             if (message.execTime != null && Object.hasOwnProperty.call(message, "execTime"))
-                writer.uint32(/* id 3, wireType 2 =*/26).string(message.execTime);
+                writer.uint32(26).string(message.execTime);
             if (message.side != null && Object.hasOwnProperty.call(message, "side"))
-                writer.uint32(/* id 4, wireType 0 =*/32).int32(message.side);
+                writer.uint32(32).int32(message.side);
             if (message.symbol != null && Object.hasOwnProperty.call(message, "symbol"))
-                writer.uint32(/* id 5, wireType 0 =*/40).int32(message.symbol);
+                writer.uint32(40).int32(message.symbol);
             if (message.tickDirection != null && Object.hasOwnProperty.call(message, "tickDirection"))
-                writer.uint32(/* id 6, wireType 0 =*/48).int32(message.tickDirection);
+                writer.uint32(48).int32(message.tickDirection);
             if (message.transactTimeE6 != null && Object.hasOwnProperty.call(message, "transactTimeE6"))
-                writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.transactTimeE6);
+                writer.uint32(56).uint32(message.transactTimeE6);
             return writer;
         };
 
-        /**
-         * Encodes the specified RecentTrade message, length delimited. Does not implicitly {@link PBIndexQuote.RecentTrade.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof PBIndexQuote.RecentTrade
-         * @static
-         * @param {PBIndexQuote.IRecentTrade} message RecentTrade message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
         RecentTrade.encodeDelimited = function encodeDelimited(message, writer) {
             return this.encode(message, writer).ldelim();
         };
 
-        /**
-         * Decodes a RecentTrade message from the specified reader or buffer.
-         * @function decode
-         * @memberof PBIndexQuote.RecentTrade
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {PBIndexQuote.RecentTrade} RecentTrade
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
         RecentTrade.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
@@ -907,30 +531,12 @@ $root.PBIndexQuote = (function() {
             return message;
         };
 
-        /**
-         * Decodes a RecentTrade message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof PBIndexQuote.RecentTrade
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {PBIndexQuote.RecentTrade} RecentTrade
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
         RecentTrade.decodeDelimited = function decodeDelimited(reader) {
             if (!(reader instanceof $Reader))
                 reader = new $Reader(reader);
             return this.decode(reader, reader.uint32());
         };
 
-        /**
-         * Verifies a RecentTrade message.
-         * @function verify
-         * @memberof PBIndexQuote.RecentTrade
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
         RecentTrade.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
@@ -976,14 +582,6 @@ $root.PBIndexQuote = (function() {
             return null;
         };
 
-        /**
-         * Creates a RecentTrade message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof PBIndexQuote.RecentTrade
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {PBIndexQuote.RecentTrade} RecentTrade
-         */
         RecentTrade.fromObject = function fromObject(object) {
             if (object instanceof $root.PBIndexQuote.RecentTrade)
                 return object;
@@ -1031,15 +629,6 @@ $root.PBIndexQuote = (function() {
             return message;
         };
 
-        /**
-         * Creates a plain object from a RecentTrade message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof PBIndexQuote.RecentTrade
-         * @static
-         * @param {PBIndexQuote.RecentTrade} message RecentTrade
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
         RecentTrade.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
@@ -1073,13 +662,6 @@ $root.PBIndexQuote = (function() {
             return object;
         };
 
-        /**
-         * Converts this RecentTrade to JSON.
-         * @function toJSON
-         * @memberof PBIndexQuote.RecentTrade
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
         RecentTrade.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
@@ -1087,87 +669,181 @@ $root.PBIndexQuote = (function() {
         return RecentTrade;
     })();
 
-    PBIndexQuote.instrument = (function() {
+    PBIndexQuote.Instrument = (function() {
 
-        /**
-         * Properties of an instrument.
-         * @memberof PBIndexQuote
-         * @interface Iinstrument
-         */
-
-        /**
-         * Constructs a new instrument.
-         * @memberof PBIndexQuote
-         * @classdesc Represents an instrument.
-         * @implements Iinstrument
-         * @constructor
-         * @param {PBIndexQuote.Iinstrument=} [properties] Properties to set
-         */
-        function instrument(properties) {
+        function Instrument(properties) {
             if (properties)
                 for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
 
-        /**
-         * Creates a new instrument instance using the specified properties.
-         * @function create
-         * @memberof PBIndexQuote.instrument
-         * @static
-         * @param {PBIndexQuote.Iinstrument=} [properties] Properties to set
-         * @returns {PBIndexQuote.instrument} instrument instance
-         */
-        instrument.create = function create(properties) {
-            return new instrument(properties);
+        Instrument.prototype.id = 0;
+        Instrument.prototype.crossSeq = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+        Instrument.prototype.countdownHour = 0;
+        Instrument.prototype.createdAt = "";
+        Instrument.prototype.fundingRateE6 = 0;
+        Instrument.prototype.highPrice24hE4 = 0;
+        Instrument.prototype.indexPriceE4 = 0;
+        Instrument.prototype.lastTickDirection = 0;
+        Instrument.prototype.lowPrice24hE4 = 0;
+        Instrument.prototype.markPriceE4 = 0;
+        Instrument.prototype.nextFundingTime = "";
+        Instrument.prototype.openInterest = 0;
+        Instrument.prototype.openValueE8 = 0;
+        Instrument.prototype.predictedFundingRateE6 = 0;
+        Instrument.prototype.prevPrice1hE4 = 0;
+        Instrument.prototype.prevPrice24hE4 = 0;
+        Instrument.prototype.price1hPcntE6 = 0;
+        Instrument.prototype.price24hPcntE6 = 0;
+        Instrument.prototype.symbol = 0;
+        Instrument.prototype.totalTurnoverE8 = 0;
+        Instrument.prototype.totalVolume = 0;
+        Instrument.prototype.turnover24hE8 = 0;
+        Instrument.prototype.updatedAt = "";
+        Instrument.prototype.volume24h = 0;
+
+        Instrument.create = function create(properties) {
+            return new Instrument(properties);
         };
 
-        /**
-         * Encodes the specified instrument message. Does not implicitly {@link PBIndexQuote.instrument.verify|verify} messages.
-         * @function encode
-         * @memberof PBIndexQuote.instrument
-         * @static
-         * @param {PBIndexQuote.Iinstrument} message instrument message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        instrument.encode = function encode(message, writer) {
+        Instrument.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
+            if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+                writer.uint32(0).int32(message.id);
+            if (message.crossSeq != null && Object.hasOwnProperty.call(message, "crossSeq"))
+                writer.uint32(8).int64(message.crossSeq);
+            if (message.countdownHour != null && Object.hasOwnProperty.call(message, "countdownHour"))
+                writer.uint32(16).int32(message.countdownHour);
+            if (message.createdAt != null && Object.hasOwnProperty.call(message, "createdAt"))
+                writer.uint32(26).string(message.createdAt);
+            if (message.fundingRateE6 != null && Object.hasOwnProperty.call(message, "fundingRateE6"))
+                writer.uint32(32).int32(message.fundingRateE6);
+            if (message.highPrice24hE4 != null && Object.hasOwnProperty.call(message, "highPrice24hE4"))
+                writer.uint32(41).double(message.highPrice24hE4);
+            if (message.indexPriceE4 != null && Object.hasOwnProperty.call(message, "indexPriceE4"))
+                writer.uint32(49).double(message.indexPriceE4);
+            if (message.lastTickDirection != null && Object.hasOwnProperty.call(message, "lastTickDirection"))
+                writer.uint32(56).int32(message.lastTickDirection);
+            if (message.lowPrice24hE4 != null && Object.hasOwnProperty.call(message, "lowPrice24hE4"))
+                writer.uint32(65).double(message.lowPrice24hE4);
+            if (message.markPriceE4 != null && Object.hasOwnProperty.call(message, "markPriceE4"))
+                writer.uint32(73).double(message.markPriceE4);
+            if (message.nextFundingTime != null && Object.hasOwnProperty.call(message, "nextFundingTime"))
+                writer.uint32(82).string(message.nextFundingTime);
+            if (message.openInterest != null && Object.hasOwnProperty.call(message, "openInterest"))
+                writer.uint32(89).double(message.openInterest);
+            if (message.openValueE8 != null && Object.hasOwnProperty.call(message, "openValueE8"))
+                writer.uint32(97).double(message.openValueE8);
+            if (message.predictedFundingRateE6 != null && Object.hasOwnProperty.call(message, "predictedFundingRateE6"))
+                writer.uint32(104).int32(message.predictedFundingRateE6);
+            if (message.prevPrice1hE4 != null && Object.hasOwnProperty.call(message, "prevPrice1hE4"))
+                writer.uint32(113).double(message.prevPrice1hE4);
+            if (message.prevPrice24hE4 != null && Object.hasOwnProperty.call(message, "prevPrice24hE4"))
+                writer.uint32(121).double(message.prevPrice24hE4);
+            if (message.price1hPcntE6 != null && Object.hasOwnProperty.call(message, "price1hPcntE6"))
+                writer.uint32(128).int32(message.price1hPcntE6);
+            if (message.price24hPcntE6 != null && Object.hasOwnProperty.call(message, "price24hPcntE6"))
+                writer.uint32(136).int32(message.price24hPcntE6);
+            if (message.symbol != null && Object.hasOwnProperty.call(message, "symbol"))
+                writer.uint32(144).int32(message.symbol);
+            if (message.totalTurnoverE8 != null && Object.hasOwnProperty.call(message, "totalTurnoverE8"))
+                writer.uint32(153).double(message.totalTurnoverE8);
+            if (message.totalVolume != null && Object.hasOwnProperty.call(message, "totalVolume"))
+                writer.uint32(161).double(message.totalVolume);
+            if (message.turnover24hE8 != null && Object.hasOwnProperty.call(message, "turnover24hE8"))
+                writer.uint32(169).double(message.turnover24hE8);
+            if (message.updatedAt != null && Object.hasOwnProperty.call(message, "updatedAt"))
+                writer.uint32(178).string(message.updatedAt);
+            if (message.volume24h != null && Object.hasOwnProperty.call(message, "volume24h"))
+                writer.uint32(185).double(message.volume24h);
             return writer;
         };
 
-        /**
-         * Encodes the specified instrument message, length delimited. Does not implicitly {@link PBIndexQuote.instrument.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof PBIndexQuote.instrument
-         * @static
-         * @param {PBIndexQuote.Iinstrument} message instrument message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        instrument.encodeDelimited = function encodeDelimited(message, writer) {
+        Instrument.encodeDelimited = function encodeDelimited(message, writer) {
             return this.encode(message, writer).ldelim();
         };
 
-        /**
-         * Decodes an instrument message from the specified reader or buffer.
-         * @function decode
-         * @memberof PBIndexQuote.instrument
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {PBIndexQuote.instrument} instrument
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        instrument.decode = function decode(reader, length) {
+        Instrument.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.PBIndexQuote.instrument();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.PBIndexQuote.Instrument();
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
+                case 0:
+                    message.id = reader.int32();
+                    break;
+                case 1:
+                    message.crossSeq = reader.int64();
+                    break;
+                case 2:
+                    message.countdownHour = reader.int32();
+                    break;
+                case 3:
+                    message.createdAt = reader.string();
+                    break;
+                case 4:
+                    message.fundingRateE6 = reader.int32();
+                    break;
+                case 5:
+                    message.highPrice24hE4 = reader.double();
+                    break;
+                case 6:
+                    message.indexPriceE4 = reader.double();
+                    break;
+                case 7:
+                    message.lastTickDirection = reader.int32();
+                    break;
+                case 8:
+                    message.lowPrice24hE4 = reader.double();
+                    break;
+                case 9:
+                    message.markPriceE4 = reader.double();
+                    break;
+                case 10:
+                    message.nextFundingTime = reader.string();
+                    break;
+                case 11:
+                    message.openInterest = reader.double();
+                    break;
+                case 12:
+                    message.openValueE8 = reader.double();
+                    break;
+                case 13:
+                    message.predictedFundingRateE6 = reader.int32();
+                    break;
+                case 14:
+                    message.prevPrice1hE4 = reader.double();
+                    break;
+                case 15:
+                    message.prevPrice24hE4 = reader.double();
+                    break;
+                case 16:
+                    message.price1hPcntE6 = reader.int32();
+                    break;
+                case 17:
+                    message.price24hPcntE6 = reader.int32();
+                    break;
+                case 18:
+                    message.symbol = reader.int32();
+                    break;
+                case 19:
+                    message.totalTurnoverE8 = reader.double();
+                    break;
+                case 20:
+                    message.totalVolume = reader.double();
+                    break;
+                case 21:
+                    message.turnover24hE8 = reader.double();
+                    break;
+                case 22:
+                    message.updatedAt = reader.string();
+                    break;
+                case 23:
+                    message.volume24h = reader.double();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1176,75 +852,271 @@ $root.PBIndexQuote = (function() {
             return message;
         };
 
-        /**
-         * Decodes an instrument message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof PBIndexQuote.instrument
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {PBIndexQuote.instrument} instrument
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        instrument.decodeDelimited = function decodeDelimited(reader) {
+        Instrument.decodeDelimited = function decodeDelimited(reader) {
             if (!(reader instanceof $Reader))
                 reader = new $Reader(reader);
             return this.decode(reader, reader.uint32());
         };
 
-        /**
-         * Verifies an instrument message.
-         * @function verify
-         * @memberof PBIndexQuote.instrument
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        instrument.verify = function verify(message) {
+        Instrument.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
+            if (message.id != null && message.hasOwnProperty("id"))
+                if (!$util.isInteger(message.id))
+                    return "id: integer expected";
+            if (message.crossSeq != null && message.hasOwnProperty("crossSeq"))
+                if (!$util.isInteger(message.crossSeq) && !(message.crossSeq && $util.isInteger(message.crossSeq.low) && $util.isInteger(message.crossSeq.high)))
+                    return "crossSeq: integer|Long expected";
+            if (message.countdownHour != null && message.hasOwnProperty("countdownHour"))
+                if (!$util.isInteger(message.countdownHour))
+                    return "countdownHour: integer expected";
+            if (message.createdAt != null && message.hasOwnProperty("createdAt"))
+                if (!$util.isString(message.createdAt))
+                    return "createdAt: string expected";
+            if (message.fundingRateE6 != null && message.hasOwnProperty("fundingRateE6"))
+                if (!$util.isInteger(message.fundingRateE6))
+                    return "fundingRateE6: integer expected";
+            if (message.highPrice24hE4 != null && message.hasOwnProperty("highPrice24hE4"))
+                if (typeof message.highPrice24hE4 !== "number")
+                    return "highPrice24hE4: number expected";
+            if (message.indexPriceE4 != null && message.hasOwnProperty("indexPriceE4"))
+                if (typeof message.indexPriceE4 !== "number")
+                    return "indexPriceE4: number expected";
+            if (message.lastTickDirection != null && message.hasOwnProperty("lastTickDirection"))
+                switch (message.lastTickDirection) {
+                default:
+                    return "lastTickDirection: enum value expected";
+                case 0:
+                case 1:
+                    break;
+                }
+            if (message.lowPrice24hE4 != null && message.hasOwnProperty("lowPrice24hE4"))
+                if (typeof message.lowPrice24hE4 !== "number")
+                    return "lowPrice24hE4: number expected";
+            if (message.markPriceE4 != null && message.hasOwnProperty("markPriceE4"))
+                if (typeof message.markPriceE4 !== "number")
+                    return "markPriceE4: number expected";
+            if (message.nextFundingTime != null && message.hasOwnProperty("nextFundingTime"))
+                if (!$util.isString(message.nextFundingTime))
+                    return "nextFundingTime: string expected";
+            if (message.openInterest != null && message.hasOwnProperty("openInterest"))
+                if (typeof message.openInterest !== "number")
+                    return "openInterest: number expected";
+            if (message.openValueE8 != null && message.hasOwnProperty("openValueE8"))
+                if (typeof message.openValueE8 !== "number")
+                    return "openValueE8: number expected";
+            if (message.predictedFundingRateE6 != null && message.hasOwnProperty("predictedFundingRateE6"))
+                if (!$util.isInteger(message.predictedFundingRateE6))
+                    return "predictedFundingRateE6: integer expected";
+            if (message.prevPrice1hE4 != null && message.hasOwnProperty("prevPrice1hE4"))
+                if (typeof message.prevPrice1hE4 !== "number")
+                    return "prevPrice1hE4: number expected";
+            if (message.prevPrice24hE4 != null && message.hasOwnProperty("prevPrice24hE4"))
+                if (typeof message.prevPrice24hE4 !== "number")
+                    return "prevPrice24hE4: number expected";
+            if (message.price1hPcntE6 != null && message.hasOwnProperty("price1hPcntE6"))
+                if (!$util.isInteger(message.price1hPcntE6))
+                    return "price1hPcntE6: integer expected";
+            if (message.price24hPcntE6 != null && message.hasOwnProperty("price24hPcntE6"))
+                if (!$util.isInteger(message.price24hPcntE6))
+                    return "price24hPcntE6: integer expected";
+            if (message.symbol != null && message.hasOwnProperty("symbol"))
+                switch (message.symbol) {
+                default:
+                    return "symbol: enum value expected";
+                case 0:
+                case 1:
+                    break;
+                }
+            if (message.totalTurnoverE8 != null && message.hasOwnProperty("totalTurnoverE8"))
+                if (typeof message.totalTurnoverE8 !== "number")
+                    return "totalTurnoverE8: number expected";
+            if (message.totalVolume != null && message.hasOwnProperty("totalVolume"))
+                if (typeof message.totalVolume !== "number")
+                    return "totalVolume: number expected";
+            if (message.turnover24hE8 != null && message.hasOwnProperty("turnover24hE8"))
+                if (typeof message.turnover24hE8 !== "number")
+                    return "turnover24hE8: number expected";
+            if (message.updatedAt != null && message.hasOwnProperty("updatedAt"))
+                if (!$util.isString(message.updatedAt))
+                    return "updatedAt: string expected";
+            if (message.volume24h != null && message.hasOwnProperty("volume24h"))
+                if (typeof message.volume24h !== "number")
+                    return "volume24h: number expected";
             return null;
         };
 
-        /**
-         * Creates an instrument message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof PBIndexQuote.instrument
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {PBIndexQuote.instrument} instrument
-         */
-        instrument.fromObject = function fromObject(object) {
-            if (object instanceof $root.PBIndexQuote.instrument)
+        Instrument.fromObject = function fromObject(object) {
+            if (object instanceof $root.PBIndexQuote.Instrument)
                 return object;
-            return new $root.PBIndexQuote.instrument();
+            var message = new $root.PBIndexQuote.Instrument();
+            if (object.id != null)
+                message.id = object.id | 0;
+            if (object.crossSeq != null)
+                if ($util.Long)
+                    (message.crossSeq = $util.Long.fromValue(object.crossSeq)).unsigned = false;
+                else if (typeof object.crossSeq === "string")
+                    message.crossSeq = parseInt(object.crossSeq, 10);
+                else if (typeof object.crossSeq === "number")
+                    message.crossSeq = object.crossSeq;
+                else if (typeof object.crossSeq === "object")
+                    message.crossSeq = new $util.LongBits(object.crossSeq.low >>> 0, object.crossSeq.high >>> 0).toNumber();
+            if (object.countdownHour != null)
+                message.countdownHour = object.countdownHour | 0;
+            if (object.createdAt != null)
+                message.createdAt = String(object.createdAt);
+            if (object.fundingRateE6 != null)
+                message.fundingRateE6 = object.fundingRateE6 | 0;
+            if (object.highPrice24hE4 != null)
+                message.highPrice24hE4 = Number(object.highPrice24hE4);
+            if (object.indexPriceE4 != null)
+                message.indexPriceE4 = Number(object.indexPriceE4);
+            switch (object.lastTickDirection) {
+            case "ZeroMinusTick":
+            case 0:
+                message.lastTickDirection = 0;
+                break;
+            case "ZeroPlusTick":
+            case 1:
+                message.lastTickDirection = 1;
+                break;
+            }
+            if (object.lowPrice24hE4 != null)
+                message.lowPrice24hE4 = Number(object.lowPrice24hE4);
+            if (object.markPriceE4 != null)
+                message.markPriceE4 = Number(object.markPriceE4);
+            if (object.nextFundingTime != null)
+                message.nextFundingTime = String(object.nextFundingTime);
+            if (object.openInterest != null)
+                message.openInterest = Number(object.openInterest);
+            if (object.openValueE8 != null)
+                message.openValueE8 = Number(object.openValueE8);
+            if (object.predictedFundingRateE6 != null)
+                message.predictedFundingRateE6 = object.predictedFundingRateE6 | 0;
+            if (object.prevPrice1hE4 != null)
+                message.prevPrice1hE4 = Number(object.prevPrice1hE4);
+            if (object.prevPrice24hE4 != null)
+                message.prevPrice24hE4 = Number(object.prevPrice24hE4);
+            if (object.price1hPcntE6 != null)
+                message.price1hPcntE6 = object.price1hPcntE6 | 0;
+            if (object.price24hPcntE6 != null)
+                message.price24hPcntE6 = object.price24hPcntE6 | 0;
+            switch (object.symbol) {
+            case "BTCUSD":
+            case 0:
+                message.symbol = 0;
+                break;
+            case "ETHUSD":
+            case 1:
+                message.symbol = 1;
+                break;
+            }
+            if (object.totalTurnoverE8 != null)
+                message.totalTurnoverE8 = Number(object.totalTurnoverE8);
+            if (object.totalVolume != null)
+                message.totalVolume = Number(object.totalVolume);
+            if (object.turnover24hE8 != null)
+                message.turnover24hE8 = Number(object.turnover24hE8);
+            if (object.updatedAt != null)
+                message.updatedAt = String(object.updatedAt);
+            if (object.volume24h != null)
+                message.volume24h = Number(object.volume24h);
+            return message;
         };
 
-        /**
-         * Creates a plain object from an instrument message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof PBIndexQuote.instrument
-         * @static
-         * @param {PBIndexQuote.instrument} message instrument
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        instrument.toObject = function toObject() {
-            return {};
+        Instrument.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.id = 0;
+                if ($util.Long) {
+                    var long = new $util.Long(0, 0, false);
+                    object.crossSeq = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.crossSeq = options.longs === String ? "0" : 0;
+                object.countdownHour = 0;
+                object.createdAt = "";
+                object.fundingRateE6 = 0;
+                object.highPrice24hE4 = 0;
+                object.indexPriceE4 = 0;
+                object.lastTickDirection = options.enums === String ? "ZeroMinusTick" : 0;
+                object.lowPrice24hE4 = 0;
+                object.markPriceE4 = 0;
+                object.nextFundingTime = "";
+                object.openInterest = 0;
+                object.openValueE8 = 0;
+                object.predictedFundingRateE6 = 0;
+                object.prevPrice1hE4 = 0;
+                object.prevPrice24hE4 = 0;
+                object.price1hPcntE6 = 0;
+                object.price24hPcntE6 = 0;
+                object.symbol = options.enums === String ? "BTCUSD" : 0;
+                object.totalTurnoverE8 = 0;
+                object.totalVolume = 0;
+                object.turnover24hE8 = 0;
+                object.updatedAt = "";
+                object.volume24h = 0;
+            }
+            if (message.id != null && message.hasOwnProperty("id"))
+                object.id = message.id;
+            if (message.crossSeq != null && message.hasOwnProperty("crossSeq"))
+                if (typeof message.crossSeq === "number")
+                    object.crossSeq = options.longs === String ? String(message.crossSeq) : message.crossSeq;
+                else
+                    object.crossSeq = options.longs === String ? $util.Long.prototype.toString.call(message.crossSeq) : options.longs === Number ? new $util.LongBits(message.crossSeq.low >>> 0, message.crossSeq.high >>> 0).toNumber() : message.crossSeq;
+            if (message.countdownHour != null && message.hasOwnProperty("countdownHour"))
+                object.countdownHour = message.countdownHour;
+            if (message.createdAt != null && message.hasOwnProperty("createdAt"))
+                object.createdAt = message.createdAt;
+            if (message.fundingRateE6 != null && message.hasOwnProperty("fundingRateE6"))
+                object.fundingRateE6 = message.fundingRateE6;
+            if (message.highPrice24hE4 != null && message.hasOwnProperty("highPrice24hE4"))
+                object.highPrice24hE4 = options.json && !isFinite(message.highPrice24hE4) ? String(message.highPrice24hE4) : message.highPrice24hE4;
+            if (message.indexPriceE4 != null && message.hasOwnProperty("indexPriceE4"))
+                object.indexPriceE4 = options.json && !isFinite(message.indexPriceE4) ? String(message.indexPriceE4) : message.indexPriceE4;
+            if (message.lastTickDirection != null && message.hasOwnProperty("lastTickDirection"))
+                object.lastTickDirection = options.enums === String ? $root.PBIndexQuote.TickDirection[message.lastTickDirection] : message.lastTickDirection;
+            if (message.lowPrice24hE4 != null && message.hasOwnProperty("lowPrice24hE4"))
+                object.lowPrice24hE4 = options.json && !isFinite(message.lowPrice24hE4) ? String(message.lowPrice24hE4) : message.lowPrice24hE4;
+            if (message.markPriceE4 != null && message.hasOwnProperty("markPriceE4"))
+                object.markPriceE4 = options.json && !isFinite(message.markPriceE4) ? String(message.markPriceE4) : message.markPriceE4;
+            if (message.nextFundingTime != null && message.hasOwnProperty("nextFundingTime"))
+                object.nextFundingTime = message.nextFundingTime;
+            if (message.openInterest != null && message.hasOwnProperty("openInterest"))
+                object.openInterest = options.json && !isFinite(message.openInterest) ? String(message.openInterest) : message.openInterest;
+            if (message.openValueE8 != null && message.hasOwnProperty("openValueE8"))
+                object.openValueE8 = options.json && !isFinite(message.openValueE8) ? String(message.openValueE8) : message.openValueE8;
+            if (message.predictedFundingRateE6 != null && message.hasOwnProperty("predictedFundingRateE6"))
+                object.predictedFundingRateE6 = message.predictedFundingRateE6;
+            if (message.prevPrice1hE4 != null && message.hasOwnProperty("prevPrice1hE4"))
+                object.prevPrice1hE4 = options.json && !isFinite(message.prevPrice1hE4) ? String(message.prevPrice1hE4) : message.prevPrice1hE4;
+            if (message.prevPrice24hE4 != null && message.hasOwnProperty("prevPrice24hE4"))
+                object.prevPrice24hE4 = options.json && !isFinite(message.prevPrice24hE4) ? String(message.prevPrice24hE4) : message.prevPrice24hE4;
+            if (message.price1hPcntE6 != null && message.hasOwnProperty("price1hPcntE6"))
+                object.price1hPcntE6 = message.price1hPcntE6;
+            if (message.price24hPcntE6 != null && message.hasOwnProperty("price24hPcntE6"))
+                object.price24hPcntE6 = message.price24hPcntE6;
+            if (message.symbol != null && message.hasOwnProperty("symbol"))
+                object.symbol = options.enums === String ? $root.PBIndexQuote.Symbol[message.symbol] : message.symbol;
+            if (message.totalTurnoverE8 != null && message.hasOwnProperty("totalTurnoverE8"))
+                object.totalTurnoverE8 = options.json && !isFinite(message.totalTurnoverE8) ? String(message.totalTurnoverE8) : message.totalTurnoverE8;
+            if (message.totalVolume != null && message.hasOwnProperty("totalVolume"))
+                object.totalVolume = options.json && !isFinite(message.totalVolume) ? String(message.totalVolume) : message.totalVolume;
+            if (message.turnover24hE8 != null && message.hasOwnProperty("turnover24hE8"))
+                object.turnover24hE8 = options.json && !isFinite(message.turnover24hE8) ? String(message.turnover24hE8) : message.turnover24hE8;
+            if (message.updatedAt != null && message.hasOwnProperty("updatedAt"))
+                object.updatedAt = message.updatedAt;
+            if (message.volume24h != null && message.hasOwnProperty("volume24h"))
+                object.volume24h = options.json && !isFinite(message.volume24h) ? String(message.volume24h) : message.volume24h;
+            return object;
         };
 
-        /**
-         * Converts this instrument to JSON.
-         * @function toJSON
-         * @memberof PBIndexQuote.instrument
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        instrument.prototype.toJSON = function toJSON() {
+        Instrument.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
-        return instrument;
+        return Instrument;
     })();
 
     return PBIndexQuote;
