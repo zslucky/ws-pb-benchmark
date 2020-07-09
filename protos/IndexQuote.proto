@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-message PBIndexQuote {
+message IndexQuote {
   enum Side {
     Buy = 0;
     Sell = 1;

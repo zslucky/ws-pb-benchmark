@@ -124,13 +124,20 @@ myWorker.postMessage('123');
 myWorker.onmessage = function (_ref) {
   var data = _ref.data;
 
+  if (data && data.type === 'rtt') {
+    pushRttData(data.val);
+    return;
+  }
+
   if (data === 'opened') {
     document.querySelector('.status-txt').innerHTML = '<span style="color:green">Connected</span>';
     return;
   }
 
   var endTs = new Date().getTime();
-  console.log('full span = ', endTs - data.timestampE6, 'ms');
+  var totalTs = endTs - data.timestampE6;
+  console.log('full span = ', totalTs, 'ms');
+  pushMainDataTime(totalTs);
 };
 
 var timer = 0;
@@ -169,7 +176,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60794" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59808" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

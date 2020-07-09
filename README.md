@@ -2,7 +2,7 @@
 Websocket with PB demo and benchmark
 
 ## Demo
-[Demo Address](https://zslucky.github.io/ws-pb-benchmark/dist/index.html)
+`Get Msg` button will trigger a 2 seconds interval stream from websocket. [Demo Address](https://zslucky.github.io/ws-pb-benchmark/dist/index.html)
 
 ## Tech
  - Heroku

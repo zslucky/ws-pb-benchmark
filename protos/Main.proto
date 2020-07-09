@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+message Main {
+  string type = 0;
+  bytes data = 1;
+}

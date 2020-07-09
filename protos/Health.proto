@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+message Health {
+  string op = 0;
+  repeated uint64 args = 1;
+}

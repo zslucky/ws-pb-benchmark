@@ -1,6 +1,9 @@
-import { PBIndexQuote } from "../../protos/IndexQuote";
+import protoMain from "../../protos/proto-main";
 
-const ws = new WebSocket('wss://ws-js-pb-server.herokuapp.com/pb');
+console.log('protoMain = ', protoMain);
+
+var host = process.env.NODE_ENV === 'dev' ? 'ws://localhost:3000' : 'wss://ws-js-pb-server.herokuapp.com';
+var ws = new WebSocket(`${host}/pb`);
 
 ws.onopen = () => {
   document.querySelector('.status-txt').innerHTML = '<span style="color:green">Connected</span>';
@@ -11,42 +14,31 @@ ws.onopen = () => {
  */
 ws.binaryType = 'arraybuffer';
 ws.onmessage = function (message) {
-  // const start = performance.now();
-
   const data = new Uint8Array(message.data);
-  const decodeMsg = PBIndexQuote.decode(data);
+
+  const mainMsg = protoMain.Main.decode(data);
+  const typeMsg = protoMain[mainMsg.type].decode(mainMsg.data);
+
+  if (typeMsg.op === 'pong') {
+    const rtt = new Date().getTime() - Number(typeMsg.args[0]);
+    console.log(`Pong --> ${rtt}ms`);
+    pushRttData(rtt);
+    return;
+  };
+
   const endTs = new Date().getTime();
+  const totalTs = endTs - typeMsg.timestampE6;
+  console.log('full span = ', totalTs, 'ms');
 
-  console.log('full span = ', endTs - decodeMsg.timestampE6, 'ms');
-
-  // console.log('decodeMsg = ', decodeMsg);
-  // const end = performance.now();
-  // console.log('span = ', end - start, 'ms');
+  pushMainDataTime(totalTs);
 };
+
 
 let timer = 0;
 window.sendMsg = function sendMsg() {
   clearInterval(timer);
-  timer = setInterval(() => { ws.send(1); }, 2000);
+  timer = setInterval(() => {
+    ws.send(JSON.stringify({ op: 'ping', args:[new Date().getTime()] }));
+    ws.send(JSON.stringify({ op: 'topic', args:[new Date().getTime()] }));
+  }, 2000);
 }
-
-
-/**
- * Use FileReader
- */
-
-// ws.onmessage = function (message) {
-//   const start = performance.now();
-//   console.log('message = ', message);
-//   var reader = new FileReader();
-
-//   reader.readAsArrayBuffer(message.data);
-//   reader.onload = () => {
-//     var buf = new Uint8Array(reader.result);
-//     console.log('buf = ', buf);
-//     var content = response.decode(buf);
-//     console.log('content = ', content);
-//     const end = performance.now();
-//     console.log('span = ', end - start, 'ms');
-//   };
-// };

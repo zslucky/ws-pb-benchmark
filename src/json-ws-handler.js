@@ -32,8 +32,15 @@ jsonWsHandler.on('connection', function connection(ws) {
     consola.info('[Json WS]: closed.');
   });
 
-  ws.on('message', () => {
-    ws.send(JSON.stringify(getData()));
+  ws.on('message', (info) => {
+    const { op, args } = JSON.parse(info);
+    const [ts] = args;
+    console.log(op);
+    if (op === 'ping') {
+      ws.send(JSON.stringify({ op: 'pong', args }));
+      return;
+    }
+    ws.send(JSON.stringify({ ...getData(), timestampE6: ts }));
   });
 });
 

@@ -6,9 +6,9 @@
   "author": "lucky.zhou <zsney.lzhou@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "parcel ./web/index.html ./web/json-pages/index.html ./web/pb-pages/index.html ./web/json-webworker-pages/index.html ./web/pb-webworker-pages/index.html",
+    "dev": "NODE_ENV=dev parcel ./web/index.html ./web/json-pages/index.html ./web/pb-pages/index.html ./web/json-webworker-pages/index.html ./web/pb-webworker-pages/index.html",
     "server": "nodemon index",
-    "proto": "pbjs --keep-case --no-comments -t static-module -w commonjs -o ./protos/IndexQuote.js ./protos/IndexQuote.proto",
+    "proto": "pbjs --keep-case --no-comments -t static-module -w commonjs -o ./protos/proto-main.js ./protos/Main.proto ./protos/IndexQuote.proto ./protos/Health.proto",
     "build": "yarn proto && parcel build --public-url '/ws-pb-benchmark/dist' ./web/index.html ./web/json-pages/index.html ./web/pb-pages/index.html ./web/json-webworker-pages/index.html ./web/pb-webworker-pages/index.html"
   },
   "dependencies": {

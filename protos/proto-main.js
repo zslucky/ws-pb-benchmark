@@ -7,9 +7,120 @@ var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.ut
 
 var $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
 
-$root.PBIndexQuote = (function() {
+$root.Main = (function() {
 
-    function PBIndexQuote(properties) {
+    function Main(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    Main.prototype.type = "";
+    Main.prototype.data = $util.newBuffer([]);
+
+    Main.create = function create(properties) {
+        return new Main(properties);
+    };
+
+    Main.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.type != null && Object.hasOwnProperty.call(message, "type"))
+            writer.uint32(2).string(message.type);
+        if (message.data != null && Object.hasOwnProperty.call(message, "data"))
+            writer.uint32(10).bytes(message.data);
+        return writer;
+    };
+
+    Main.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    Main.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Main();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                message.type = reader.string();
+                break;
+            case 1:
+                message.data = reader.bytes();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    Main.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    Main.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.type != null && message.hasOwnProperty("type"))
+            if (!$util.isString(message.type))
+                return "type: string expected";
+        if (message.data != null && message.hasOwnProperty("data"))
+            if (!(message.data && typeof message.data.length === "number" || $util.isString(message.data)))
+                return "data: buffer expected";
+        return null;
+    };
+
+    Main.fromObject = function fromObject(object) {
+        if (object instanceof $root.Main)
+            return object;
+        var message = new $root.Main();
+        if (object.type != null)
+            message.type = String(object.type);
+        if (object.data != null)
+            if (typeof object.data === "string")
+                $util.base64.decode(object.data, message.data = $util.newBuffer($util.base64.length(object.data)), 0);
+            else if (object.data.length)
+                message.data = object.data;
+        return message;
+    };
+
+    Main.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.type = "";
+            if (options.bytes === String)
+                object.data = "";
+            else {
+                object.data = [];
+                if (options.bytes !== Array)
+                    object.data = $util.newBuffer(object.data);
+            }
+        }
+        if (message.type != null && message.hasOwnProperty("type"))
+            object.type = message.type;
+        if (message.data != null && message.hasOwnProperty("data"))
+            object.data = options.bytes === String ? $util.base64.encode(message.data, 0, message.data.length) : options.bytes === Array ? Array.prototype.slice.call(message.data) : message.data;
+        return object;
+    };
+
+    Main.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return Main;
+})();
+
+$root.IndexQuote = (function() {
+
+    function IndexQuote(properties) {
         this.orderbook = [];
         this.recentTrade = [];
         if (properties)
@@ -18,19 +129,19 @@ $root.PBIndexQuote = (function() {
                     this[keys[i]] = properties[keys[i]];
     }
 
-    PBIndexQuote.prototype.crossSeq = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-    PBIndexQuote.prototype.timestampE6 = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-    PBIndexQuote.prototype.topic = "";
-    PBIndexQuote.prototype.type = "";
-    PBIndexQuote.prototype.orderbook = $util.emptyArray;
-    PBIndexQuote.prototype.recentTrade = $util.emptyArray;
-    PBIndexQuote.prototype.instrument = null;
+    IndexQuote.prototype.crossSeq = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+    IndexQuote.prototype.timestampE6 = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+    IndexQuote.prototype.topic = "";
+    IndexQuote.prototype.type = "";
+    IndexQuote.prototype.orderbook = $util.emptyArray;
+    IndexQuote.prototype.recentTrade = $util.emptyArray;
+    IndexQuote.prototype.instrument = null;
 
-    PBIndexQuote.create = function create(properties) {
-        return new PBIndexQuote(properties);
+    IndexQuote.create = function create(properties) {
+        return new IndexQuote(properties);
     };
 
-    PBIndexQuote.encode = function encode(message, writer) {
+    IndexQuote.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
         if (message.crossSeq != null && Object.hasOwnProperty.call(message, "crossSeq"))
@@ -43,23 +154,23 @@ $root.PBIndexQuote = (function() {
             writer.uint32(26).string(message.type);
         if (message.orderbook != null && message.orderbook.length)
             for (var i = 0; i < message.orderbook.length; ++i)
-                $root.PBIndexQuote.Orderbook.encode(message.orderbook[i], writer.uint32(34).fork()).ldelim();
+                $root.IndexQuote.Orderbook.encode(message.orderbook[i], writer.uint32(34).fork()).ldelim();
         if (message.recentTrade != null && message.recentTrade.length)
             for (var i = 0; i < message.recentTrade.length; ++i)
-                $root.PBIndexQuote.RecentTrade.encode(message.recentTrade[i], writer.uint32(42).fork()).ldelim();
+                $root.IndexQuote.RecentTrade.encode(message.recentTrade[i], writer.uint32(42).fork()).ldelim();
         if (message.instrument != null && Object.hasOwnProperty.call(message, "instrument"))
-            $root.PBIndexQuote.Instrument.encode(message.instrument, writer.uint32(50).fork()).ldelim();
+            $root.IndexQuote.Instrument.encode(message.instrument, writer.uint32(50).fork()).ldelim();
         return writer;
     };
 
-    PBIndexQuote.encodeDelimited = function encodeDelimited(message, writer) {
+    IndexQuote.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
-    PBIndexQuote.decode = function decode(reader, length) {
+    IndexQuote.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.PBIndexQuote();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.IndexQuote();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
@@ -78,15 +189,15 @@ $root.PBIndexQuote = (function() {
             case 4:
                 if (!(message.orderbook && message.orderbook.length))
                     message.orderbook = [];
-                message.orderbook.push($root.PBIndexQuote.Orderbook.decode(reader, reader.uint32()));
+                message.orderbook.push($root.IndexQuote.Orderbook.decode(reader, reader.uint32()));
                 break;
             case 5:
                 if (!(message.recentTrade && message.recentTrade.length))
                     message.recentTrade = [];
-                message.recentTrade.push($root.PBIndexQuote.RecentTrade.decode(reader, reader.uint32()));
+                message.recentTrade.push($root.IndexQuote.RecentTrade.decode(reader, reader.uint32()));
                 break;
             case 6:
-                message.instrument = $root.PBIndexQuote.Instrument.decode(reader, reader.uint32());
+                message.instrument = $root.IndexQuote.Instrument.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -96,13 +207,13 @@ $root.PBIndexQuote = (function() {
         return message;
     };
 
-    PBIndexQuote.decodeDelimited = function decodeDelimited(reader) {
+    IndexQuote.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
-    PBIndexQuote.verify = function verify(message) {
+    IndexQuote.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.crossSeq != null && message.hasOwnProperty("crossSeq"))
@@ -121,7 +232,7 @@ $root.PBIndexQuote = (function() {
             if (!Array.isArray(message.orderbook))
                 return "orderbook: array expected";
             for (var i = 0; i < message.orderbook.length; ++i) {
-                var error = $root.PBIndexQuote.Orderbook.verify(message.orderbook[i]);
+                var error = $root.IndexQuote.Orderbook.verify(message.orderbook[i]);
                 if (error)
                     return "orderbook." + error;
             }
@@ -130,23 +241,23 @@ $root.PBIndexQuote = (function() {
             if (!Array.isArray(message.recentTrade))
                 return "recentTrade: array expected";
             for (var i = 0; i < message.recentTrade.length; ++i) {
-                var error = $root.PBIndexQuote.RecentTrade.verify(message.recentTrade[i]);
+                var error = $root.IndexQuote.RecentTrade.verify(message.recentTrade[i]);
                 if (error)
                     return "recentTrade." + error;
             }
         }
         if (message.instrument != null && message.hasOwnProperty("instrument")) {
-            var error = $root.PBIndexQuote.Instrument.verify(message.instrument);
+            var error = $root.IndexQuote.Instrument.verify(message.instrument);
             if (error)
                 return "instrument." + error;
         }
         return null;
     };
 
-    PBIndexQuote.fromObject = function fromObject(object) {
-        if (object instanceof $root.PBIndexQuote)
+    IndexQuote.fromObject = function fromObject(object) {
+        if (object instanceof $root.IndexQuote)
             return object;
-        var message = new $root.PBIndexQuote();
+        var message = new $root.IndexQuote();
         if (object.crossSeq != null)
             if ($util.Long)
                 (message.crossSeq = $util.Long.fromValue(object.crossSeq)).unsigned = false;
@@ -171,33 +282,33 @@ $root.PBIndexQuote = (function() {
             message.type = String(object.type);
         if (object.orderbook) {
             if (!Array.isArray(object.orderbook))
-                throw TypeError(".PBIndexQuote.orderbook: array expected");
+                throw TypeError(".IndexQuote.orderbook: array expected");
             message.orderbook = [];
             for (var i = 0; i < object.orderbook.length; ++i) {
                 if (typeof object.orderbook[i] !== "object")
-                    throw TypeError(".PBIndexQuote.orderbook: object expected");
-                message.orderbook[i] = $root.PBIndexQuote.Orderbook.fromObject(object.orderbook[i]);
+                    throw TypeError(".IndexQuote.orderbook: object expected");
+                message.orderbook[i] = $root.IndexQuote.Orderbook.fromObject(object.orderbook[i]);
             }
         }
         if (object.recentTrade) {
             if (!Array.isArray(object.recentTrade))
-                throw TypeError(".PBIndexQuote.recentTrade: array expected");
+                throw TypeError(".IndexQuote.recentTrade: array expected");
             message.recentTrade = [];
             for (var i = 0; i < object.recentTrade.length; ++i) {
                 if (typeof object.recentTrade[i] !== "object")
-                    throw TypeError(".PBIndexQuote.recentTrade: object expected");
-                message.recentTrade[i] = $root.PBIndexQuote.RecentTrade.fromObject(object.recentTrade[i]);
+                    throw TypeError(".IndexQuote.recentTrade: object expected");
+                message.recentTrade[i] = $root.IndexQuote.RecentTrade.fromObject(object.recentTrade[i]);
             }
         }
         if (object.instrument != null) {
             if (typeof object.instrument !== "object")
-                throw TypeError(".PBIndexQuote.instrument: object expected");
-            message.instrument = $root.PBIndexQuote.Instrument.fromObject(object.instrument);
+                throw TypeError(".IndexQuote.instrument: object expected");
+            message.instrument = $root.IndexQuote.Instrument.fromObject(object.instrument);
         }
         return message;
     };
 
-    PBIndexQuote.toObject = function toObject(message, options) {
+    IndexQuote.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         var object = {};
@@ -237,44 +348,44 @@ $root.PBIndexQuote = (function() {
         if (message.orderbook && message.orderbook.length) {
             object.orderbook = [];
             for (var j = 0; j < message.orderbook.length; ++j)
-                object.orderbook[j] = $root.PBIndexQuote.Orderbook.toObject(message.orderbook[j], options);
+                object.orderbook[j] = $root.IndexQuote.Orderbook.toObject(message.orderbook[j], options);
         }
         if (message.recentTrade && message.recentTrade.length) {
             object.recentTrade = [];
             for (var j = 0; j < message.recentTrade.length; ++j)
-                object.recentTrade[j] = $root.PBIndexQuote.RecentTrade.toObject(message.recentTrade[j], options);
+                object.recentTrade[j] = $root.IndexQuote.RecentTrade.toObject(message.recentTrade[j], options);
         }
         if (message.instrument != null && message.hasOwnProperty("instrument"))
-            object.instrument = $root.PBIndexQuote.Instrument.toObject(message.instrument, options);
+            object.instrument = $root.IndexQuote.Instrument.toObject(message.instrument, options);
         return object;
     };
 
-    PBIndexQuote.prototype.toJSON = function toJSON() {
+    IndexQuote.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    PBIndexQuote.Side = (function() {
+    IndexQuote.Side = (function() {
         var valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "Buy"] = 0;
         values[valuesById[1] = "Sell"] = 1;
         return values;
     })();
 
-    PBIndexQuote.Symbol = (function() {
+    IndexQuote.Symbol = (function() {
         var valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "BTCUSD"] = 0;
         values[valuesById[1] = "ETHUSD"] = 1;
         return values;
     })();
 
-    PBIndexQuote.TickDirection = (function() {
+    IndexQuote.TickDirection = (function() {
         var valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "ZeroMinusTick"] = 0;
         values[valuesById[1] = "ZeroPlusTick"] = 1;
         return values;
     })();
 
-    PBIndexQuote.Orderbook = (function() {
+    IndexQuote.Orderbook = (function() {
 
         function Orderbook(properties) {
             if (properties)
@@ -316,7 +427,7 @@ $root.PBIndexQuote = (function() {
         Orderbook.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.PBIndexQuote.Orderbook();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.IndexQuote.Orderbook();
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
@@ -381,9 +492,9 @@ $root.PBIndexQuote = (function() {
         };
 
         Orderbook.fromObject = function fromObject(object) {
-            if (object instanceof $root.PBIndexQuote.Orderbook)
+            if (object instanceof $root.IndexQuote.Orderbook)
                 return object;
-            var message = new $root.PBIndexQuote.Orderbook();
+            var message = new $root.IndexQuote.Orderbook();
             if (object.id != null)
                 message.id = object.id | 0;
             if (object.price != null)
@@ -429,11 +540,11 @@ $root.PBIndexQuote = (function() {
             if (message.price != null && message.hasOwnProperty("price"))
                 object.price = options.json && !isFinite(message.price) ? String(message.price) : message.price;
             if (message.side != null && message.hasOwnProperty("side"))
-                object.side = options.enums === String ? $root.PBIndexQuote.Side[message.side] : message.side;
+                object.side = options.enums === String ? $root.IndexQuote.Side[message.side] : message.side;
             if (message.size != null && message.hasOwnProperty("size"))
                 object.size = options.json && !isFinite(message.size) ? String(message.size) : message.size;
             if (message.symbol != null && message.hasOwnProperty("symbol"))
-                object.symbol = options.enums === String ? $root.PBIndexQuote.Symbol[message.symbol] : message.symbol;
+                object.symbol = options.enums === String ? $root.IndexQuote.Symbol[message.symbol] : message.symbol;
             return object;
         };
 
@@ -444,7 +555,7 @@ $root.PBIndexQuote = (function() {
         return Orderbook;
     })();
 
-    PBIndexQuote.RecentTrade = (function() {
+    IndexQuote.RecentTrade = (function() {
 
         function RecentTrade(properties) {
             if (properties)
@@ -495,7 +606,7 @@ $root.PBIndexQuote = (function() {
         RecentTrade.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.PBIndexQuote.RecentTrade();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.IndexQuote.RecentTrade();
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
@@ -583,9 +694,9 @@ $root.PBIndexQuote = (function() {
         };
 
         RecentTrade.fromObject = function fromObject(object) {
-            if (object instanceof $root.PBIndexQuote.RecentTrade)
+            if (object instanceof $root.IndexQuote.RecentTrade)
                 return object;
-            var message = new $root.PBIndexQuote.RecentTrade();
+            var message = new $root.IndexQuote.RecentTrade();
             if (object.execID != null)
                 message.execID = String(object.execID);
             if (object.execPrice != null)
@@ -652,11 +763,11 @@ $root.PBIndexQuote = (function() {
             if (message.execTime != null && message.hasOwnProperty("execTime"))
                 object.execTime = message.execTime;
             if (message.side != null && message.hasOwnProperty("side"))
-                object.side = options.enums === String ? $root.PBIndexQuote.Side[message.side] : message.side;
+                object.side = options.enums === String ? $root.IndexQuote.Side[message.side] : message.side;
             if (message.symbol != null && message.hasOwnProperty("symbol"))
-                object.symbol = options.enums === String ? $root.PBIndexQuote.Symbol[message.symbol] : message.symbol;
+                object.symbol = options.enums === String ? $root.IndexQuote.Symbol[message.symbol] : message.symbol;
             if (message.tickDirection != null && message.hasOwnProperty("tickDirection"))
-                object.tickDirection = options.enums === String ? $root.PBIndexQuote.TickDirection[message.tickDirection] : message.tickDirection;
+                object.tickDirection = options.enums === String ? $root.IndexQuote.TickDirection[message.tickDirection] : message.tickDirection;
             if (message.transactTimeE6 != null && message.hasOwnProperty("transactTimeE6"))
                 object.transactTimeE6 = message.transactTimeE6;
             return object;
@@ -669,7 +780,7 @@ $root.PBIndexQuote = (function() {
         return RecentTrade;
     })();
 
-    PBIndexQuote.Instrument = (function() {
+    IndexQuote.Instrument = (function() {
 
         function Instrument(properties) {
             if (properties)
@@ -768,7 +879,7 @@ $root.PBIndexQuote = (function() {
         Instrument.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.PBIndexQuote.Instrument();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.IndexQuote.Instrument();
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
@@ -947,9 +1058,9 @@ $root.PBIndexQuote = (function() {
         };
 
         Instrument.fromObject = function fromObject(object) {
-            if (object instanceof $root.PBIndexQuote.Instrument)
+            if (object instanceof $root.IndexQuote.Instrument)
                 return object;
-            var message = new $root.PBIndexQuote.Instrument();
+            var message = new $root.IndexQuote.Instrument();
             if (object.id != null)
                 message.id = object.id | 0;
             if (object.crossSeq != null)
@@ -1076,7 +1187,7 @@ $root.PBIndexQuote = (function() {
             if (message.indexPriceE4 != null && message.hasOwnProperty("indexPriceE4"))
                 object.indexPriceE4 = options.json && !isFinite(message.indexPriceE4) ? String(message.indexPriceE4) : message.indexPriceE4;
             if (message.lastTickDirection != null && message.hasOwnProperty("lastTickDirection"))
-                object.lastTickDirection = options.enums === String ? $root.PBIndexQuote.TickDirection[message.lastTickDirection] : message.lastTickDirection;
+                object.lastTickDirection = options.enums === String ? $root.IndexQuote.TickDirection[message.lastTickDirection] : message.lastTickDirection;
             if (message.lowPrice24hE4 != null && message.hasOwnProperty("lowPrice24hE4"))
                 object.lowPrice24hE4 = options.json && !isFinite(message.lowPrice24hE4) ? String(message.lowPrice24hE4) : message.lowPrice24hE4;
             if (message.markPriceE4 != null && message.hasOwnProperty("markPriceE4"))
@@ -1098,7 +1209,7 @@ $root.PBIndexQuote = (function() {
             if (message.price24hPcntE6 != null && message.hasOwnProperty("price24hPcntE6"))
                 object.price24hPcntE6 = message.price24hPcntE6;
             if (message.symbol != null && message.hasOwnProperty("symbol"))
-                object.symbol = options.enums === String ? $root.PBIndexQuote.Symbol[message.symbol] : message.symbol;
+                object.symbol = options.enums === String ? $root.IndexQuote.Symbol[message.symbol] : message.symbol;
             if (message.totalTurnoverE8 != null && message.hasOwnProperty("totalTurnoverE8"))
                 object.totalTurnoverE8 = options.json && !isFinite(message.totalTurnoverE8) ? String(message.totalTurnoverE8) : message.totalTurnoverE8;
             if (message.totalVolume != null && message.hasOwnProperty("totalVolume"))
@@ -1119,7 +1230,143 @@ $root.PBIndexQuote = (function() {
         return Instrument;
     })();
 
-    return PBIndexQuote;
+    return IndexQuote;
+})();
+
+$root.Health = (function() {
+
+    function Health(properties) {
+        this.args = [];
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    Health.prototype.op = "";
+    Health.prototype.args = $util.emptyArray;
+
+    Health.create = function create(properties) {
+        return new Health(properties);
+    };
+
+    Health.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.op != null && Object.hasOwnProperty.call(message, "op"))
+            writer.uint32(2).string(message.op);
+        if (message.args != null && message.args.length) {
+            writer.uint32(10).fork();
+            for (var i = 0; i < message.args.length; ++i)
+                writer.uint64(message.args[i]);
+            writer.ldelim();
+        }
+        return writer;
+    };
+
+    Health.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    Health.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Health();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                message.op = reader.string();
+                break;
+            case 1:
+                if (!(message.args && message.args.length))
+                    message.args = [];
+                if ((tag & 7) === 2) {
+                    var end2 = reader.uint32() + reader.pos;
+                    while (reader.pos < end2)
+                        message.args.push(reader.uint64());
+                } else
+                    message.args.push(reader.uint64());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    Health.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    Health.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.op != null && message.hasOwnProperty("op"))
+            if (!$util.isString(message.op))
+                return "op: string expected";
+        if (message.args != null && message.hasOwnProperty("args")) {
+            if (!Array.isArray(message.args))
+                return "args: array expected";
+            for (var i = 0; i < message.args.length; ++i)
+                if (!$util.isInteger(message.args[i]) && !(message.args[i] && $util.isInteger(message.args[i].low) && $util.isInteger(message.args[i].high)))
+                    return "args: integer|Long[] expected";
+        }
+        return null;
+    };
+
+    Health.fromObject = function fromObject(object) {
+        if (object instanceof $root.Health)
+            return object;
+        var message = new $root.Health();
+        if (object.op != null)
+            message.op = String(object.op);
+        if (object.args) {
+            if (!Array.isArray(object.args))
+                throw TypeError(".Health.args: array expected");
+            message.args = [];
+            for (var i = 0; i < object.args.length; ++i)
+                if ($util.Long)
+                    (message.args[i] = $util.Long.fromValue(object.args[i])).unsigned = true;
+                else if (typeof object.args[i] === "string")
+                    message.args[i] = parseInt(object.args[i], 10);
+                else if (typeof object.args[i] === "number")
+                    message.args[i] = object.args[i];
+                else if (typeof object.args[i] === "object")
+                    message.args[i] = new $util.LongBits(object.args[i].low >>> 0, object.args[i].high >>> 0).toNumber(true);
+        }
+        return message;
+    };
+
+    Health.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.arrays || options.defaults)
+            object.args = [];
+        if (options.defaults)
+            object.op = "";
+        if (message.op != null && message.hasOwnProperty("op"))
+            object.op = message.op;
+        if (message.args && message.args.length) {
+            object.args = [];
+            for (var j = 0; j < message.args.length; ++j)
+                if (typeof message.args[j] === "number")
+                    object.args[j] = options.longs === String ? String(message.args[j]) : message.args[j];
+                else
+                    object.args[j] = options.longs === String ? $util.Long.prototype.toString.call(message.args[j]) : options.longs === Number ? new $util.LongBits(message.args[j].low >>> 0, message.args[j].high >>> 0).toNumber(true) : message.args[j];
+        }
+        return object;
+    };
+
+    Health.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return Health;
 })();
 
 module.exports = $root;

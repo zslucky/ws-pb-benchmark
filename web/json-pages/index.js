@@ -1,8 +1,5 @@
-var ws = new WebSocket('wss://ws-js-pb-server.herokuapp.com/json');
-
-function ab2str(buf) {
-  return String.fromCharCode.apply(null, new Uint16Array(buf));
-}
+var host = process.env.NODE_ENV === 'dev' ? 'ws://localhost:3000' : 'wss://ws-js-pb-server.herokuapp.com';
+var ws = new WebSocket(`${host}/json`);
 
 ws.onopen = () => {
   document.querySelector('.status-txt').innerHTML = '<span style="color:green">Connected</span>';
@@ -11,23 +8,33 @@ ws.onopen = () => {
 /**
  * Use arrayBuffer
  */
-// ws.binaryType = 'arraybuffer';
 ws.onmessage = function (message) {
-  // const start = performance.now();
-
   const data = JSON.parse(message.data);
 
-  const endTs = new Date().getTime();
-  console.log('full span = ', endTs - data.timestampE6, 'ms');
+  if (data.op === 'pong') {
+    const rtt = new Date().getTime() - Number(data.args[0]);
+    console.log(`Pong --> ${rtt}ms`);
+    pushRttData(rtt);
+    return;
+  };
 
-  // const msg = ab2str(message.data);
-  // console.log('msg = ', msg);
-  // const end = performance.now();
-  // console.log('span = ', end - start, 'ms');
+  const endTs = new Date().getTime();
+  const totalTs = endTs - data.timestampE6;
+  console.log('full span = ', totalTs, 'ms');
+
+  pushMainDataTime(totalTs);
 };
 
 let timer = 0;
 window.sendMsg = function sendMsg() {
   clearInterval(timer);
-  timer = setInterval(() => { ws.send(1); }, 2000);
+
+  timer = setInterval(() => {
+    ws.send(JSON.stringify({ op: 'ping', args:[new Date().getTime()] }));
+    ws.send(JSON.stringify({ op: 'topic', args:[new Date().getTime()] }));
+  }, 2000);
 }
+
+window.addEventListener('load', () => {
+
+});

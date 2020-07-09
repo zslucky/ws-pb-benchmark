@@ -1,6 +1,7 @@
-import { PBIndexQuote } from "../../protos/IndexQuote";
+import protoMain from "../../protos/proto-main";
 
-var ws = new WebSocket('wss://ws-js-pb-server.herokuapp.com/pb');
+var host = process.env.NODE_ENV === 'dev' ? 'ws://localhost:3000' : 'wss://ws-js-pb-server.herokuapp.com';
+var ws = new WebSocket(`${host}/pb`);
 
 ws.binaryType = 'arraybuffer';
 
@@ -24,9 +25,18 @@ ws.onopen = () => {
  */
 ws.onmessage = function (message) {
   const data = new Uint8Array(message.data);
-  const decodeMsg = PBIndexQuote.decode(data);
 
-  postMessage(decodeMsg);
+  const mainMsg = protoMain.Main.decode(data);
+  const typeMsg = protoMain[mainMsg.type].decode(mainMsg.data);
+
+  if (typeMsg.op === 'pong') {
+    const rtt = new Date().getTime() - Number(typeMsg.args[0]);
+    console.log(`Pong --> ${rtt}ms`);
+    postMessage({ type: 'rtt', val: rtt });
+    return;
+  };
+
+  postMessage(typeMsg);
 };
 
 onmessage = ({ data }) => {
@@ -34,5 +44,7 @@ onmessage = ({ data }) => {
     waitQueue.push(data);
     return;
   }
-  ws.send(data);
+
+  ws.send(JSON.stringify({ op: 'ping', args:[new Date().getTime()] }));
+  ws.send(JSON.stringify({ op: 'topic', args:[new Date().getTime()] }));
 };

@@ -117,37 +117,31 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"pb-webworker-pages/index.js":[function(require,module,exports) {
-var myWorker = new Worker("/ws.worker.ffaeda34.js");
+})({"chart.js":[function(require,module,exports) {
+var rttSum = 0;
+var avg = 0;
+var rttArr = [];
 
-myWorker.onmessage = function (_ref) {
-  var data = _ref.data;
-
-  if (data && data.type === 'rtt') {
-    pushRttData(data.val);
-    return;
-  }
-
-  if (data === 'opened') {
-    document.querySelector('.status-txt').innerHTML = '<span style="color:green">Connected</span>';
-    return;
-  }
-
-  var endTs = new Date().getTime();
-  var totalTs = endTs - data.timestampE6;
-  console.log('full span = ', totalTs, 'ms');
-  pushMainDataTime(totalTs);
+window.pushRttData = function (rtt) {
+  rttArr.push(rtt);
+  rttSum += rtt || 0;
+  avg = Math.round(rttSum / rttArr.length * 1e5) / 1e5;
+  document.querySelector('.rtt-dv').innerHTML = avg;
 };
 
-var timer = 0;
+var totalSum = 0;
+var totalAvg = 0;
+var encodeDecodeAvg = 0;
+var totalArr = [];
 
-window.sendMsg = function sendMsg() {
-  clearInterval(timer);
-  timer = setInterval(function () {
-    myWorker.postMessage('ping');
-  }, 2000);
+window.pushMainDataTime = function (total) {
+  totalArr.push(total);
+  totalSum += total;
+  totalAvg = totalSum / totalArr.length;
+  encodeDecodeAvg = Math.round((totalAvg - avg) * 1e5) / 1e5;
+  document.querySelector('.en-de-dv').innerHTML = encodeDecodeAvg;
 };
-},{"./ws.worker.js":[["ws.worker.ffaeda34.js","pb-webworker-pages/ws.worker.js"],"ws.worker.ffaeda34.js.map","pb-webworker-pages/ws.worker.js"]}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -351,5 +345,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","pb-webworker-pages/index.js"], null)
-//# sourceMappingURL=/pb-webworker-pages.182966aa.js.map
+},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","chart.js"], null)
+//# sourceMappingURL=/chart.776f2112.js.map

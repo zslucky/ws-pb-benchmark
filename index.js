@@ -10,8 +10,6 @@ const server = http.createServer();
 server.on('upgrade', function upgrade(request, socket, head) {
   const pathname = url.parse(request.url).pathname;
 
-  console.log('pathname = ', pathname);
-
   switch (pathname) {
     case '/pb':
       pbWsHandler.handleUpgrade(request, socket, head, (ws) => {

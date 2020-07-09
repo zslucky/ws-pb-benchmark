@@ -118,11 +118,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"json-pages/index.js":[function(require,module,exports) {
-var ws = new WebSocket('wss://ws-js-pb-server.herokuapp.com/json');
-
-function ab2str(buf) {
-  return String.fromCharCode.apply(null, new Uint16Array(buf));
-}
+var host = "dev" === 'dev' ? 'ws://localhost:3000' : 'wss://ws-js-pb-server.herokuapp.com';
+var ws = new WebSocket("".concat(host, "/json"));
 
 ws.onopen = function () {
   document.querySelector('.status-txt').innerHTML = '<span style="color:green">Connected</span>';
@@ -130,17 +127,23 @@ ws.onopen = function () {
 /**
  * Use arrayBuffer
  */
-// ws.binaryType = 'arraybuffer';
 
 
 ws.onmessage = function (message) {
-  // const start = performance.now();
   var data = JSON.parse(message.data);
+
+  if (data.op === 'pong') {
+    var rtt = new Date().getTime() - Number(data.args[0]);
+    console.log("Pong --> ".concat(rtt, "ms"));
+    pushRttData(rtt);
+    return;
+  }
+
+  ;
   var endTs = new Date().getTime();
-  console.log('full span = ', endTs - data.timestampE6, 'ms'); // const msg = ab2str(message.data);
-  // console.log('msg = ', msg);
-  // const end = performance.now();
-  // console.log('span = ', end - start, 'ms');
+  var totalTs = endTs - data.timestampE6;
+  console.log('full span = ', totalTs, 'ms');
+  pushMainDataTime(totalTs);
 };
 
 var timer = 0;
@@ -148,9 +151,18 @@ var timer = 0;
 window.sendMsg = function sendMsg() {
   clearInterval(timer);
   timer = setInterval(function () {
-    ws.send(1);
+    ws.send(JSON.stringify({
+      op: 'ping',
+      args: [new Date().getTime()]
+    }));
+    ws.send(JSON.stringify({
+      op: 'topic',
+      args: [new Date().getTime()]
+    }));
   }, 2000);
 };
+
+window.addEventListener('load', function () {});
 },{}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -179,7 +191,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60794" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59808" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
