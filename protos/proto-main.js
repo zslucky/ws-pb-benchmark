@@ -826,7 +826,7 @@ $root.IndexQuote = (function() {
             if (message.crossSeq != null && Object.hasOwnProperty.call(message, "crossSeq"))
                 writer.uint32(8).int64(message.crossSeq);
             if (message.countdownHour != null && Object.hasOwnProperty.call(message, "countdownHour"))
-                writer.uint32(16).int32(message.countdownHour);
+                writer.uint32(17).double(message.countdownHour);
             if (message.createdAt != null && Object.hasOwnProperty.call(message, "createdAt"))
                 writer.uint32(26).string(message.createdAt);
             if (message.fundingRateE6 != null && Object.hasOwnProperty.call(message, "fundingRateE6"))
@@ -890,7 +890,7 @@ $root.IndexQuote = (function() {
                     message.crossSeq = reader.int64();
                     break;
                 case 2:
-                    message.countdownHour = reader.int32();
+                    message.countdownHour = reader.double();
                     break;
                 case 3:
                     message.createdAt = reader.string();
@@ -979,8 +979,8 @@ $root.IndexQuote = (function() {
                 if (!$util.isInteger(message.crossSeq) && !(message.crossSeq && $util.isInteger(message.crossSeq.low) && $util.isInteger(message.crossSeq.high)))
                     return "crossSeq: integer|Long expected";
             if (message.countdownHour != null && message.hasOwnProperty("countdownHour"))
-                if (!$util.isInteger(message.countdownHour))
-                    return "countdownHour: integer expected";
+                if (typeof message.countdownHour !== "number")
+                    return "countdownHour: number expected";
             if (message.createdAt != null && message.hasOwnProperty("createdAt"))
                 if (!$util.isString(message.createdAt))
                     return "createdAt: string expected";
@@ -1073,7 +1073,7 @@ $root.IndexQuote = (function() {
                 else if (typeof object.crossSeq === "object")
                     message.crossSeq = new $util.LongBits(object.crossSeq.low >>> 0, object.crossSeq.high >>> 0).toNumber();
             if (object.countdownHour != null)
-                message.countdownHour = object.countdownHour | 0;
+                message.countdownHour = Number(object.countdownHour);
             if (object.createdAt != null)
                 message.createdAt = String(object.createdAt);
             if (object.fundingRateE6 != null)
@@ -1177,7 +1177,7 @@ $root.IndexQuote = (function() {
                 else
                     object.crossSeq = options.longs === String ? $util.Long.prototype.toString.call(message.crossSeq) : options.longs === Number ? new $util.LongBits(message.crossSeq.low >>> 0, message.crossSeq.high >>> 0).toNumber() : message.crossSeq;
             if (message.countdownHour != null && message.hasOwnProperty("countdownHour"))
-                object.countdownHour = message.countdownHour;
+                object.countdownHour = options.json && !isFinite(message.countdownHour) ? String(message.countdownHour) : message.countdownHour;
             if (message.createdAt != null && message.hasOwnProperty("createdAt"))
                 object.createdAt = message.createdAt;
             if (message.fundingRateE6 != null && message.hasOwnProperty("fundingRateE6"))

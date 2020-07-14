@@ -13,14 +13,12 @@ ws.onmessage = function (message) {
 
   if (data.op === 'pong') {
     const rtt = new Date().getTime() - Number(data.args[0]);
-    console.log(`Pong --> ${rtt}ms`);
     pushRttData(rtt);
     return;
   };
 
   const endTs = new Date().getTime();
   const totalTs = endTs - data.timestampE6;
-  console.log('full span = ', totalTs, 'ms');
 
   pushMainDataTime(totalTs);
 };

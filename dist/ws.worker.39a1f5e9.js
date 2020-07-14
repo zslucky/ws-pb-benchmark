@@ -140,11 +140,9 @@ ws.onopen = function () {
 
 ws.onmessage = function (message) {
   var data = JSON.parse(message.data);
-  console.log('data = ', data);
 
   if (data.op === 'pong') {
     var rtt = new Date().getTime() - Number(data.args[0]);
-    console.log("Pong --> ".concat(rtt, "ms"));
     postMessage({
       type: 'rtt',
       val: rtt
@@ -201,7 +199,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59808" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60408" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

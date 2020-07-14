@@ -5585,7 +5585,7 @@ $root.IndexQuote = function () {
       if (!writer) writer = $Writer.create();
       if (message.id != null && Object.hasOwnProperty.call(message, "id")) writer.uint32(0).int32(message.id);
       if (message.crossSeq != null && Object.hasOwnProperty.call(message, "crossSeq")) writer.uint32(8).int64(message.crossSeq);
-      if (message.countdownHour != null && Object.hasOwnProperty.call(message, "countdownHour")) writer.uint32(16).int32(message.countdownHour);
+      if (message.countdownHour != null && Object.hasOwnProperty.call(message, "countdownHour")) writer.uint32(17).double(message.countdownHour);
       if (message.createdAt != null && Object.hasOwnProperty.call(message, "createdAt")) writer.uint32(26).string(message.createdAt);
       if (message.fundingRateE6 != null && Object.hasOwnProperty.call(message, "fundingRateE6")) writer.uint32(32).int32(message.fundingRateE6);
       if (message.highPrice24hE4 != null && Object.hasOwnProperty.call(message, "highPrice24hE4")) writer.uint32(41).double(message.highPrice24hE4);
@@ -5632,7 +5632,7 @@ $root.IndexQuote = function () {
             break;
 
           case 2:
-            message.countdownHour = reader.int32();
+            message.countdownHour = reader.double();
             break;
 
           case 3:
@@ -5737,7 +5737,7 @@ $root.IndexQuote = function () {
       if (_typeof(message) !== "object" || message === null) return "object expected";
       if (message.id != null && message.hasOwnProperty("id")) if (!$util.isInteger(message.id)) return "id: integer expected";
       if (message.crossSeq != null && message.hasOwnProperty("crossSeq")) if (!$util.isInteger(message.crossSeq) && !(message.crossSeq && $util.isInteger(message.crossSeq.low) && $util.isInteger(message.crossSeq.high))) return "crossSeq: integer|Long expected";
-      if (message.countdownHour != null && message.hasOwnProperty("countdownHour")) if (!$util.isInteger(message.countdownHour)) return "countdownHour: integer expected";
+      if (message.countdownHour != null && message.hasOwnProperty("countdownHour")) if (typeof message.countdownHour !== "number") return "countdownHour: number expected";
       if (message.createdAt != null && message.hasOwnProperty("createdAt")) if (!$util.isString(message.createdAt)) return "createdAt: string expected";
       if (message.fundingRateE6 != null && message.hasOwnProperty("fundingRateE6")) if (!$util.isInteger(message.fundingRateE6)) return "fundingRateE6: integer expected";
       if (message.highPrice24hE4 != null && message.hasOwnProperty("highPrice24hE4")) if (typeof message.highPrice24hE4 !== "number") return "highPrice24hE4: number expected";
@@ -5781,7 +5781,7 @@ $root.IndexQuote = function () {
       var message = new $root.IndexQuote.Instrument();
       if (object.id != null) message.id = object.id | 0;
       if (object.crossSeq != null) if ($util.Long) (message.crossSeq = $util.Long.fromValue(object.crossSeq)).unsigned = false;else if (typeof object.crossSeq === "string") message.crossSeq = parseInt(object.crossSeq, 10);else if (typeof object.crossSeq === "number") message.crossSeq = object.crossSeq;else if (_typeof(object.crossSeq) === "object") message.crossSeq = new $util.LongBits(object.crossSeq.low >>> 0, object.crossSeq.high >>> 0).toNumber();
-      if (object.countdownHour != null) message.countdownHour = object.countdownHour | 0;
+      if (object.countdownHour != null) message.countdownHour = Number(object.countdownHour);
       if (object.createdAt != null) message.createdAt = String(object.createdAt);
       if (object.fundingRateE6 != null) message.fundingRateE6 = object.fundingRateE6 | 0;
       if (object.highPrice24hE4 != null) message.highPrice24hE4 = Number(object.highPrice24hE4);
@@ -5868,7 +5868,7 @@ $root.IndexQuote = function () {
 
       if (message.id != null && message.hasOwnProperty("id")) object.id = message.id;
       if (message.crossSeq != null && message.hasOwnProperty("crossSeq")) if (typeof message.crossSeq === "number") object.crossSeq = options.longs === String ? String(message.crossSeq) : message.crossSeq;else object.crossSeq = options.longs === String ? $util.Long.prototype.toString.call(message.crossSeq) : options.longs === Number ? new $util.LongBits(message.crossSeq.low >>> 0, message.crossSeq.high >>> 0).toNumber() : message.crossSeq;
-      if (message.countdownHour != null && message.hasOwnProperty("countdownHour")) object.countdownHour = message.countdownHour;
+      if (message.countdownHour != null && message.hasOwnProperty("countdownHour")) object.countdownHour = options.json && !isFinite(message.countdownHour) ? String(message.countdownHour) : message.countdownHour;
       if (message.createdAt != null && message.hasOwnProperty("createdAt")) object.createdAt = message.createdAt;
       if (message.fundingRateE6 != null && message.hasOwnProperty("fundingRateE6")) object.fundingRateE6 = message.fundingRateE6;
       if (message.highPrice24hE4 != null && message.hasOwnProperty("highPrice24hE4")) object.highPrice24hE4 = options.json && !isFinite(message.highPrice24hE4) ? String(message.highPrice24hE4) : message.highPrice24hE4;
@@ -6044,7 +6044,6 @@ var _protoMain = _interopRequireDefault(require("../../protos/proto-main"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-console.log('protoMain = ', _protoMain.default);
 var host = "dev" === 'dev' ? 'ws://localhost:3000' : 'wss://ws-js-pb-server.herokuapp.com';
 var ws = new WebSocket("".concat(host, "/pb"));
 
@@ -6067,7 +6066,6 @@ ws.onmessage = function (message) {
 
   if (typeMsg.op === 'pong') {
     var rtt = new Date().getTime() - Number(typeMsg.args[0]);
-    console.log("Pong --> ".concat(rtt, "ms"));
     pushRttData(rtt);
     return;
   }
@@ -6075,7 +6073,6 @@ ws.onmessage = function (message) {
   ;
   var endTs = new Date().getTime();
   var totalTs = endTs - typeMsg.timestampE6;
-  console.log('full span = ', totalTs, 'ms');
   pushMainDataTime(totalTs);
 };
 
@@ -6122,7 +6119,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59808" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60408" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

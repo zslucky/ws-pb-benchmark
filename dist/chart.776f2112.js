@@ -124,8 +124,9 @@ var rttArr = [];
 
 window.pushRttData = function (rtt) {
   rttArr.push(rtt);
+  if (rttArr.length < 10) return;
   rttSum += rtt || 0;
-  avg = Math.round(rttSum / rttArr.length * 1e5) / 1e5;
+  avg = Math.round(rttSum / (rttArr.length - 9) * 1e5) / 1e5;
   document.querySelector('.rtt-dv').innerHTML = avg;
 };
 
@@ -136,8 +137,9 @@ var totalArr = [];
 
 window.pushMainDataTime = function (total) {
   totalArr.push(total);
+  if (totalArr.length < 10) return;
   totalSum += total;
-  totalAvg = totalSum / totalArr.length;
+  totalAvg = totalSum / (totalArr.length - 9);
   encodeDecodeAvg = Math.round((totalAvg - avg) * 1e5) / 1e5;
   document.querySelector('.en-de-dv').innerHTML = encodeDecodeAvg;
 };
@@ -169,7 +171,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59808" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60408" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

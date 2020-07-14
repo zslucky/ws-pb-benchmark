@@ -31,7 +31,6 @@ ws.onmessage = function (message) {
 
   if (typeMsg.op === 'pong') {
     const rtt = new Date().getTime() - Number(typeMsg.args[0]);
-    console.log(`Pong --> ${rtt}ms`);
     postMessage({ type: 'rtt', val: rtt });
     return;
   };

@@ -21,11 +21,9 @@ ws.onopen = () => {
  */
 ws.onmessage = function (message) {
   const data = JSON.parse(message.data);
-  console.log('data = ', data);
 
   if (data.op === 'pong') {
     const rtt = new Date().getTime() - Number(data.args[0]);
-    console.log(`Pong --> ${rtt}ms`);
     postMessage({ type: 'rtt', val: rtt });
     return;
   };

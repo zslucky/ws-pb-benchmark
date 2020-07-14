@@ -33,7 +33,7 @@ message IndexQuote {
   message Instrument {
     int32 id = 0;
     int64 crossSeq = 1;
-    int32 countdownHour = 2;
+    double countdownHour = 2;
     string createdAt = 3;
     int32 fundingRateE6 = 4;
     double highPrice24hE4 = 5;

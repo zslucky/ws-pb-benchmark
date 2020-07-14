@@ -1,7 +1,5 @@
 import protoMain from "../../protos/proto-main";
 
-console.log('protoMain = ', protoMain);
-
 var host = process.env.NODE_ENV === 'dev' ? 'ws://localhost:3000' : 'wss://ws-js-pb-server.herokuapp.com';
 var ws = new WebSocket(`${host}/pb`);
 
@@ -21,14 +19,12 @@ ws.onmessage = function (message) {
 
   if (typeMsg.op === 'pong') {
     const rtt = new Date().getTime() - Number(typeMsg.args[0]);
-    console.log(`Pong --> ${rtt}ms`);
     pushRttData(rtt);
     return;
   };
 
   const endTs = new Date().getTime();
   const totalTs = endTs - typeMsg.timestampE6;
-  console.log('full span = ', totalTs, 'ms');
 
   pushMainDataTime(totalTs);
 };

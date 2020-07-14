@@ -12,7 +12,6 @@ myWorker.onmessage = ({ data }) => {
   }
   const endTs = new Date().getTime();
   const totalTs = endTs - data.timestampE6;
-  console.log('full span = ', totalTs, 'ms');
 
   pushMainDataTime(totalTs);
 };

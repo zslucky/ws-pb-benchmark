@@ -134,7 +134,6 @@ ws.onmessage = function (message) {
 
   if (data.op === 'pong') {
     var rtt = new Date().getTime() - Number(data.args[0]);
-    console.log("Pong --> ".concat(rtt, "ms"));
     pushRttData(rtt);
     return;
   }
@@ -142,7 +141,6 @@ ws.onmessage = function (message) {
   ;
   var endTs = new Date().getTime();
   var totalTs = endTs - data.timestampE6;
-  console.log('full span = ', totalTs, 'ms');
   pushMainDataTime(totalTs);
 };
 
@@ -191,7 +189,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59808" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60408" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
