@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "consola": "^2.14.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "protobufjs": "^6.9.0",
     "ws": "^7.3.1"
   },
