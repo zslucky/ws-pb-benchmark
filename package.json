@@ -16,7 +16,7 @@
     "lodash": "^4.17.21",
     "protobufjs": "^6.9.0",
     "uuid": "^8.3.0",
-    "ws": "^7.3.1"
+    "ws": "^7.4.6"
   },
   "devDependencies": {
     "nodemon": "^2.0.4",
