@@ -14,7 +14,7 @@
   "dependencies": {
     "consola": "^2.14.0",
     "lodash": "^4.17.21",
-    "protobufjs": "^6.11.3",
+    "protobufjs": "^7.2.4",
     "uuid": "^8.3.0",
     "ws": "^7.4.6"
   },
